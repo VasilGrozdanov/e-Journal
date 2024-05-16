@@ -1,0 +1,161 @@
+<!DOCTYPE HTML>
+<html lang="en" layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div class="container" layout:fragment="content">
+    <div class="py-5 text-center">
+        <h2>Order details</h2>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12 order-md-1">
+
+            <h4 class="mb-3">Details on your order</h4>
+
+            <form action="#" th:action="@{'/order/' + ${order.id}}" th:method="put" th:object="${order}">
+
+                <hr class="mb-4">
+
+                <div class="mb-3">
+                    <h5 class="d-flex mb-3">
+                        <span class="text-muted">Your order ID is:&nbsp;&nbsp;&nbsp;</span>
+                        <span class="badge badge-secondary padding-right: 0.6em; padding-left: 0.6em;"><div
+                                class="margin-bottom: .0rem !important" th:text=" ${id} "></div></span>
+                    </h5>
+                </div>
+
+                <hr class="mb-4">
+
+                <h5 class="mb-3">Order status:</h5>
+
+                <div class="mb-3">
+                    <div class="form-check">
+                        <div th:each="status : ${T(nbu.bg.logisticscompany.model.entity.OrderStatus).values()}">
+                            <input class="form-check-input" id="status" name="${status}" required
+                                   th:field="*{orderStatus}" th:value="${status}" type="radio"/>
+                            <label class=" form-check-label" for="status" th:text="${status}"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+
+                <div class="mb-3">
+                    <label for="senderUsername">Sender username</label>
+                    <input type="text" th:field="*{senderUsername}" class="form-control" id="senderUsername"  required>
+                    <div class="invalid-feedback">
+                        <span th:if="${#fields.hasErrors('senderUsername')}" th:errors="*{senderUsername}"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="receiverUsername">Receiver username</label>
+                    <input type="text" th:field="*{receiverUsername}" class="form-control" id="receiverUsername"  required>
+                    <div class="invalid-feedback">
+                        <span th:if="${#fields.hasErrors('receiverUsername')}" th:errors="*{receiverUsername}"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="deliveryAddress">Delivery Address</label>
+                    <input class="form-control" id="deliveryAddress" placeholder="1234 Main St" required
+                           th:field="*{deliveryAddress}" type="text">
+                    <div class="invalid-feedback">
+                        <span th:errors="*{deliveryAddress}" th:if="${#fields.hasErrors('deliveryAddress')}"></span>
+                    </div>
+                </div>
+
+                <div class="custom-control custom-checkbox mb-3">
+                    <input class="custom-control-input" id="isOfficeDelivery" oninput="calculateTotal()"
+                           th:field="*{isOfficeDelivery}" type="checkbox">
+                    <label class="custom-control-label" for="isOfficeDelivery">Is office pickup?</label>
+                    <div class="invalid-feedback">
+                        <span th:errors="*{isOfficeDelivery}" th:if="${#fields.hasErrors('isOfficeDelivery')}"></span>
+                    </div>
+                </div>
+                <hr class="mb-4">
+
+
+                <div class="mb-3">
+                    <label for="isOfficeDelivery">Package weight</label>
+                    <input class="form-control" id="weight" min="0" oninput="calculateTotal()" step="0.01" th:field="*{weight}"
+                           type="number">
+                    <div class="invalid-feedback">
+                        <span th:errors="*{weight}" th:if="${#fields.hasErrors('weight')}"></span>
+                    </div>
+                </div>
+                <hr class="mb-4">
+
+                <h5 class="mb-3">Total Price</h5>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">$</span>
+                    <input aria-describedby="button-addon2" class="form-control" id="totalPrice" min="0" oninput="calculateTotal()"
+                           step="0.01" th:field="*{totalPrice}" type="number">
+                    <button class="btn btn-outline-secondary" id="button-addon2" onclick="calculateTotal()"
+                            type="button">Calculate
+                    </button>
+                    <div class="invalid-feedback">
+                        <span th:errors="*{totalPrice}" th:if="${#fields.hasErrors('totalPrice')}"></span>
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Update order</button>
+            </form>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        function calculateTotal() {
+            const ECONOMY_PRICE = parseFloat("4.40");
+            const ECONOMY_ADD_ON = parseFloat("1.48");
+            const PREMIUM_ECONOMY_PRICE = parseFloat("6.13");
+            const PREMIUM_ECONOMY_ADD_ON = parseFloat("4.25");
+            const PRIORITY_PRICE = parseFloat("14.49");
+            const PRIORITY_ADD_ON = parseFloat("13.98");
+            const PRIORITY_EXTRA_KG_ADD_ON = parseFloat("0.56");
+
+            let isOfficeDelivery = document.getElementById("isOfficeDelivery").checked;
+            console.log("input", "isOfficeDelivery", isOfficeDelivery);
+            let weight = document.getElementById("weight").value;
+            let inputWeight = parseFloat(weight);
+            if (typeof inputWeight === 'number' && !Number.isNaN(inputWeight)) {
+                inputWeight = parseFloat(weight);
+            } else {
+                inputWeight = parseFloat("0");
+            }
+            var totalPrice = parseFloat("0");
+
+            if (inputWeight <= parseFloat("3")) {
+                if (isOfficeDelivery) {
+                    totalPrice = ECONOMY_PRICE;
+                } else {
+                    totalPrice = ECONOMY_PRICE + ECONOMY_ADD_ON;
+                }
+            } else if (inputWeight <= parseFloat("10")) {
+                if (isOfficeDelivery) {
+                    totalPrice = PREMIUM_ECONOMY_PRICE;
+                } else {
+                    totalPrice = PREMIUM_ECONOMY_PRICE + PREMIUM_ECONOMY_ADD_ON;
+                }
+            } else {
+                let remainingKg = Math.floor(inputWeight - parseFloat("10"));
+                let remainingKgPrice = remainingKg * PRIORITY_EXTRA_KG_ADD_ON;
+                if (isOfficeDelivery) {
+                    totalPrice = PRIORITY_PRICE + remainingKgPrice;
+                } else {
+                    totalPrice = PRIORITY_PRICE + PRIORITY_ADD_ON + remainingKgPrice;
+                }
+            }
+
+            //display the result
+            totalPrice = Math.round((totalPrice + Number.EPSILON) * 100) / 100;
+            document.getElementById('totalPrice').value = totalPrice
+            console.log(totalPrice);
+        }
+    </script>
+
+</div>
+</body>

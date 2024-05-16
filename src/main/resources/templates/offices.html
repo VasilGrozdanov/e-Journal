@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html lang="en" layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div class="container" layout:fragment="content">
+    <div class="py-5 text-center">
+        <h2>Manage Offices</h2>
+        <p class="lead">Explore and manage your company's offices here.</p>
+    </div>
+
+    <div class="table-responsive-lg">
+
+        <div class="row">
+
+            <div class="col-lg-12 order-lg-1">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Company ID</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="office: ${offices}">
+                        <th th:text="${office.id}"></th>
+                        <td th:text="${office.address}">Address</td>
+                        <td th:text="${office.companyId}">Company ID</td>
+                        <td>
+                            <form th:action="@{'/office/update/' + ${office.id}}" th:method="get">
+                                <button class="btn btn-success" type="submit"><i class="fa fa-edit"></i></button>
+                            </form>
+                            <form th:action="@{'/office/delete/' + ${office.id}}" th:method="DELETE">
+                                <button class="btn btn-danger" onclick="confirm('Are you sure?')" type="submit">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

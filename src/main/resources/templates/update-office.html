@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html lang="en" layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div class="container" layout:fragment="content">
+    <div class="py-5 text-center">
+        <h2>Update office</h2>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12 order-md-1">
+
+            <h4 class="mb-3">Office details</h4>
+
+            <form th:action="@{'/office/update/' + ${office.id}}" th:method="PUT" th:object="${office}">
+
+                <hr class="mb-4">
+
+                <div class="mb-3">
+                    <h5 class="d-flex mb-3">
+                        <span class="text-muted">Office ID is:&nbsp;&nbsp;&nbsp;</span>
+                        <span class="badge badge-secondary padding-right: 0.6em; padding-left: 0.6em;"><div
+                                class="margin-bottom: .0rem !important" th:text=" ${office.id} "></div></span>
+                    </h5>
+                </div>
+
+                <hr class="mb-4">
+
+                <div class="mb-3">
+                    <label for="address">Office Address</label>
+                    <input class="form-control" id="address" placeholder="1234 Main St" required
+                           th:field="*{address}" type="text">
+                    <div class="invalid-feedback">
+                        <span th:errors="*{address}" th:if="${#fields.hasErrors('address')}"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="companyId">Company ID</label>
+                    <input class="form-control" id="companyId" required th:field="*{companyId}" type="number">
+                    <div class="invalid-feedback">
+                        <span th:errors="*{companyId}" th:if="${#fields.hasErrors('companyId')}"></span>
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Update Office</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
