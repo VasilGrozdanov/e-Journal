@@ -36,7 +36,7 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Logistics Company API")
+                .title("Electronic School Journal API")
                 .version("1.0.0")
                 .description("Description")
                 .contact(new Contact("Contact Name", "Contact_URL", "contact@email.com"))

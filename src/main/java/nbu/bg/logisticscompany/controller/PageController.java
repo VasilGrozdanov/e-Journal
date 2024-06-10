@@ -28,25 +28,4 @@ public class PageController {
         return "login";
     }
 
-    @GetMapping("/register")
-    public String showRegisterPage() {
-        return "register";
-    }
-
-    @PostMapping("/register")
-    public ModelAndView registerUserAccount(@ModelAttribute("user") @Valid UserRegisterDto userDto,
-            HttpServletRequest request) {
-
-        try {
-            userService.registerClient(userDto);
-        }
-        catch (Exception ex) {
-            ModelAndView mav = new ModelAndView("register", "user", userDto);
-            mav.addObject("errorMessage", ex.getMessage());
-            return mav;
-        }
-        return new ModelAndView("login", "user", userDto);
-    }
-
-
 }

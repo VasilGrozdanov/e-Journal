@@ -23,21 +23,9 @@ import java.util.Set;
 @AllArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
-    private final ClientRepository clientRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
 
-
-    @Override
-    public boolean registerClient(UserRegisterDto userRegisterDto) {
-        if (userRepository.existsByUsername(userRegisterDto.getUsername())) {
-            throw new InvalidRegistration("Username is already taken!");
-        }
-        Admin newClient = Admin.builder().username(userRegisterDto.getUsername())
-                               .password(encoder.encode(userRegisterDto.getPassword())).roles(defaultRoles()).build();
-        clientRepository.save(newClient);
-        return true;
-    }
 
     @Override
     public void updateUser(String id, UserUpdateDto user) {
@@ -57,9 +45,4 @@ public class UserServiceImpl implements UserService {
         userRepository.save(currUser);
     }
 
-    private Set<Role> defaultRoles() {
-        Set<Role> defaultRoles = new HashSet<>();
-        defaultRoles.add(Role.builder().name(UserRole.TEACHER).build());
-        return defaultRoles;
-    }
 }

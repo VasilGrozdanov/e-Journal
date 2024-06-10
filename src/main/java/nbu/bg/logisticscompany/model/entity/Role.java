@@ -3,6 +3,7 @@ package nbu.bg.logisticscompany.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Locale;
 
 @Entity
 @Table(name = "Role")
@@ -21,20 +22,20 @@ public class Role {
     private UserRole name;
 
     public Role(String name) {
-        switch (name) {
-            case "Admin":
+        switch (name.toLowerCase()) {
+            case "admin":
                 this.name = UserRole.ADMIN;
                 break;
-            case "Teacher":
+            case "teacher":
                 this.name = UserRole.TEACHER;
                 break;
-            case "Student":
+            case "student":
                 this.name = UserRole.STUDENT;
                 break;
-            case "Parent":
+            case "parent":
                 this.name = UserRole.PARENT;
                 break;
-            case "Director":
+            case "director":
                 this.name = UserRole.DIRECTOR;
                 break;
             default:

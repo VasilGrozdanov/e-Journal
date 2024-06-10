@@ -19,32 +19,31 @@ import java.util.List;
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ClientRepository clientRepository;
     static boolean alreadySetup = false;
 
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        if (alreadySetup) {
+        if (alreadySetup || userRepository.existsByUsername("admin")) {
             return;
         }
 
-        String test = "Test";
+        String system = "System";
 
         User admin = User.builder().roles(new HashSet<>(List.of(new Role("Admin")))).username("admin")
-                         .password(passwordEncoder.encode("admin")).name(test).lastName(test).age(30).build();
+                         .password(passwordEncoder.encode("admin")).name(system).lastName(system).age(30).build();
 
 
         User teacher = User.builder().roles(new HashSet<>(List.of(new Role("Teacher")))).username("teacher")
-                           .password(passwordEncoder.encode("teacher")).name(test).lastName(test).age(60).build();
+                           .password(passwordEncoder.encode("teacher")).name(system).lastName(system).age(60).build();
 
         User student = User.builder().roles(new HashSet<>(List.of(new Role("Student")))).username("student")
-                           .password(passwordEncoder.encode("student")).name(test).lastName(test).age(14).build();
+                           .password(passwordEncoder.encode("student")).name(system).lastName(system).age(14).build();
 
         User parent = User.builder().roles(new HashSet<>(List.of(new Role("Parent")))).username("parent")
-                          .password(passwordEncoder.encode("parent")).name(test).lastName(test).age(35).build();
+                          .password(passwordEncoder.encode("parent")).name(system).lastName(system).age(35).build();
         User director = User.builder().roles(new HashSet<>(List.of(new Role("Director")))).username("director")
-                            .password(passwordEncoder.encode("director")).name(test).lastName(test).age(55).build();
+                            .password(passwordEncoder.encode("director")).name(system).lastName(system).age(55).build();
 
 
         // persist users

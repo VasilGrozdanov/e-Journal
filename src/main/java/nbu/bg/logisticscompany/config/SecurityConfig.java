@@ -26,27 +26,20 @@ public class SecurityConfig {
 
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration)
-            throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {
         return authConfiguration.getAuthenticationManager();
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http)
-            throws Exception {
-        http.userDetailsService(userDetailsService)
-                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
-                        .antMatchers("/register").permitAll()
-                        .antMatchers("/index").permitAll()
-                        .antMatchers("/error").permitAll()
-                        .anyRequest().authenticated())
-                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer
-                        .loginPage("/login").permitAll()
-                        .defaultSuccessUrl("/index"))
-                .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer.permitAll()
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                        .logoutSuccessUrl("/login"))
-                .authorizeHttpRequests();
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.userDetailsService(userDetailsService).authorizeHttpRequests(
+                    authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
+                            .antMatchers("/index").permitAll().antMatchers("/error").permitAll().anyRequest()
+                            .authenticated()).formLogin(
+                    httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.loginPage("/login").permitAll()
+                                                                                      .defaultSuccessUrl("/index"))
+            .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer.permitAll().logoutRequestMatcher(
+                    new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")).authorizeHttpRequests();
         return http.build();
     }
 
