@@ -1,11 +1,9 @@
 package nbu.bg.logisticscompany.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import nbu.bg.logisticscompany.annotation.PasswordMatches;
-import nbu.bg.logisticscompany.model.entity.Role;
+import nbu.bg.logisticscompany.model.entity.UserRole;
+import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -14,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @PasswordMatches
 public class UserRegisterDto {
     @NotBlank
@@ -34,5 +33,12 @@ public class UserRegisterDto {
     @NotNull
     private int age;
     @NotNull
-    private String role;
+    private UserRole role;
+
+    @Nullable
+    private Integer studentNumber;
+
+    @Nullable
+    private SchoolRegisterDto directorSchool;
+
 }

@@ -10,9 +10,9 @@
             <a class="btn btn-outline-info" href="/order"
                sec:authorize="hasAuthority('OFFICE_EMPLOYEE') or hasAuthority('ADMIN')">Create order</a>
             <a class="p-2 text-dark" href="/client" sec:authorize="hasAuthority('CLIENT')">My Orders</a>
-            <a class="btn btn-outline-info" href="/office"
+            <a class="btn btn-outline-info" href="/registerSchool"
                sec:authorize="hasAuthority('ADMIN')">Create
-                offices</a>
+                school</a>
 
         </nav>
         <div sec:authorize="!isAuthenticated()">

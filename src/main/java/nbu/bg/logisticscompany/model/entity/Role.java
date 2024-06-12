@@ -3,7 +3,6 @@ package nbu.bg.logisticscompany.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Locale;
 
 @Entity
 @Table(name = "Role")
@@ -20,6 +19,10 @@ public class Role {
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private UserRole name;
+
+    public Role(UserRole name) {
+        this.name = name;
+    }
 
     public Role(String name) {
         switch (name.toLowerCase()) {

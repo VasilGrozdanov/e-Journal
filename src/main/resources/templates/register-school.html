@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html lang="en" layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div class="container" layout:fragment="content">
+
+    <div class="" style="margin-top:200px">
+        <div class="rounded d-flex justify-content-center">
+            <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
+                <div class="text-center">
+                    <h3 class="text-primary">Create a profile</h3>
+                </div>
+                <div class="p-4">
+                    <p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+                    <form method="post" th:action="@{/registerSchool}">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-lock text-white"></i></span>
+                            <input class="form-control" id="name" name="name"
+                                   placeholder="Name" type="name" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-lock text-white"></i></span>
+                            <input class="form-control" id="address" name="address"
+                                   placeholder="Address" type="address" required>
+                        </div>
+                        <div class="d-grid col-12 mx-auto">
+                            <button class="btn btn-primary" type="submit"><span></span> Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var signInButton = document.querySelector("#sign-in-button");
+        signInButton.addEventListener('mouseenter', () => signInButton.classList.add('border', 'border-primary'))
+        signInButton.addEventListener('mouseleave', () => signInButton.classList.remove('border', 'border-primary'))
+
+        signInButton.addEventListener('click', () => window.location.replace("/login"))
+    </script>
+</div>
+</body>
+</html>

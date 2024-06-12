@@ -20,6 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "USER_TYPE")
 @SuperBuilder
 public class User extends BaseEntity {
 

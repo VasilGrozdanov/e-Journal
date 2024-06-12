@@ -2,8 +2,10 @@ package nbu.bg.logisticscompany.controller;
 
 import lombok.AllArgsConstructor;
 import nbu.bg.logisticscompany.annotation.security.isAdmin;
+import nbu.bg.logisticscompany.model.dto.SchoolRegisterDto;
 import nbu.bg.logisticscompany.model.dto.UserRegisterDto;
 import nbu.bg.logisticscompany.model.entity.Role;
+import nbu.bg.logisticscompany.model.entity.School;
 import nbu.bg.logisticscompany.model.entity.UserRole;
 import nbu.bg.logisticscompany.service.AdminService;
 import org.springframework.stereotype.Controller;
@@ -30,10 +32,21 @@ public class AdminController {
                 new Role(UserRole.DIRECTOR.name()));
     }
 
+    @ModelAttribute("schools")
+    public List<School> getSchools() {
+        return adminService.getSchools();
+    }
+
     @isAdmin
     @GetMapping("/register")
     public String showRegisterPage() {
         return "register";
+    }
+
+    @isAdmin
+    @GetMapping("/registerSchool")
+    public String showRegisterSchoolPage() {
+        return "register-school";
     }
 
     @isAdmin
@@ -50,6 +63,23 @@ public class AdminController {
             return mav;
         }
         return new ModelAndView("login", "user", userDto);
+    }
+
+    @isAdmin
+    @PostMapping("/registerSchool")
+    public ModelAndView registerSchool(@ModelAttribute("school") @Valid SchoolRegisterDto schoolDto,
+            HttpServletRequest request) {
+        System.err.println("hello");
+
+        try {
+            adminService.registerSchool(schoolDto);
+        }
+        catch (Exception ex) {
+            ModelAndView mav = new ModelAndView("registerSchool", "school", schoolDto);
+            mav.addObject("errorMessage", ex.getMessage());
+            return mav;
+        }
+        return new ModelAndView("login", "user", schoolDto);
     }
 
 }

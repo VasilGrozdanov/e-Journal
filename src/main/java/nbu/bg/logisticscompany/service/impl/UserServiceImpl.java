@@ -2,22 +2,14 @@ package nbu.bg.logisticscompany.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import nbu.bg.logisticscompany.exceptions.InvalidRegistration;
-import nbu.bg.logisticscompany.model.dto.UserRegisterDto;
 import nbu.bg.logisticscompany.model.dto.UserUpdateDto;
-import nbu.bg.logisticscompany.model.entity.Admin;
-import nbu.bg.logisticscompany.model.entity.Role;
 import nbu.bg.logisticscompany.model.entity.User;
-import nbu.bg.logisticscompany.model.entity.UserRole;
-import nbu.bg.logisticscompany.repository.ClientRepository;
 import nbu.bg.logisticscompany.repository.UserRepository;
 import nbu.bg.logisticscompany.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @AllArgsConstructor

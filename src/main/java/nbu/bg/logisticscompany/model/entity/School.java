@@ -31,4 +31,8 @@ public class School extends BaseEntity {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Subject> subjects;
 
+    @Override
+    public String toString() {
+        return String.format("%s, %s", name, address);
+    }
 }
