@@ -8,6 +8,7 @@ import nbu.bg.logisticscompany.model.entity.Role;
 import nbu.bg.logisticscompany.model.entity.School;
 import nbu.bg.logisticscompany.model.entity.UserRole;
 import nbu.bg.logisticscompany.service.AdminService;
+import nbu.bg.logisticscompany.service.impl.DirectorServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,6 +25,7 @@ import java.util.List;
 public class AdminController {
 
     private final AdminService adminService;
+    private final DirectorServiceImpl directorService;
 
     @ModelAttribute("roles")
     public List<Role> getRoles() {
