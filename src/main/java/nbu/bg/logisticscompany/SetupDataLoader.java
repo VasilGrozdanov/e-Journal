@@ -8,6 +8,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     private ParentRepository parentRepository;
     private AdminRepository adminRepository;
     private SchoolRepository schoolRepository;
+    private GradeRepository gradeRepository;
     private final PasswordEncoder passwordEncoder;
     static boolean alreadySetup = false;
 
@@ -50,6 +52,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
                               .password(passwordEncoder.encode("parent")).name(system).lastName(system).age(35).build();
 
         School school = School.builder().name(system).address(system).build();
+        Grade gradeA = Grade.builder().graduationYear(LocalDate.now()).school(school).letter("A").build();
+        Grade gradeB = Grade.builder().graduationYear(LocalDate.now()).school(school).letter("B").build();
 
         Director director = Director.builder().roles(new HashSet<>(List.of(new Role("Director")))).username("director")
                                     .password(passwordEncoder.encode("director")).name(system).lastName(system).age(55)
@@ -62,6 +66,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         studentRepository.save(student);
         parentRepository.save(parent);
         schoolRepository.save(school);
+        gradeRepository.save(gradeA);
+        gradeRepository.save(gradeB);
         directorRepository.save(director);
 
         alreadySetup = true;

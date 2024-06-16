@@ -9,8 +9,9 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -20,7 +21,7 @@ import java.util.List;
 @SuperBuilder
 public class Grade extends BaseEntity {
 
-    @NotBlank
+    @NotNull
     private LocalDate graduationYear;
 
     @NotBlank
@@ -28,7 +29,7 @@ public class Grade extends BaseEntity {
     private String letter;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Student> students;
+    private Set<Student> students;
 
     @OneToOne
     private School school;
@@ -39,4 +40,8 @@ public class Grade extends BaseEntity {
     @OneToOne
     private Program program;
 
+    @Override
+    public String toString() {
+        return String.format("%s, %s - %s", school, graduationYear, letter);
+    }
 }

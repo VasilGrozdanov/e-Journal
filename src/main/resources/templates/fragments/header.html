@@ -4,8 +4,8 @@
         </h5>
         <nav class="my-2 my-md-0 mr-md-3 ml-auto">
             <a class="p-2 text-dark" href="/index">Home</a>
-            <a class="p-2 text-dark" href="/orders"
-               sec:authorize="hasAuthority('COURIER') or hasAuthority('OFFICE_EMPLOYEE') or hasAuthority('ADMIN')">Orders</a>
+            <a class="p-2 text-dark" href="/enrollStudent"
+               sec:authorize="hasAuthority('ADMIN') or hasAuthority('DIRECTOR')">Enroll student</a>
             <a class="p-2 text-dark" href="/offices" sec:authorize="hasAuthority('ADMIN')">Offices</a>
             <a class="btn btn-outline-info" href="/order"
                sec:authorize="hasAuthority('OFFICE_EMPLOYEE') or hasAuthority('ADMIN')">Create order</a>
@@ -19,7 +19,7 @@
             <a class="btn btn-outline-primary" href="/login">Sign in</a>
         </div>
         <div sec:authorize="isAuthenticated()">
-            <a class="btn btn-outline-primary" href="/register" sec:authorize="hasAuthority('ADMIN')">Sign up</a>
+            <a class="btn btn-outline-primary" href="/register" sec:authorize="hasAuthority('ADMIN')">Create user</a>
             <a class="btn btn-outline-primary" href="/profile">Profile</a>
             <a class="btn btn-outline-primary" href="/logout">Logout</a>
         </div>

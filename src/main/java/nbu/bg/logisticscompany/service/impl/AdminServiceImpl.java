@@ -82,7 +82,6 @@ public class AdminServiceImpl implements AdminService {
                                             .lastName(user.getLastName()).age(user.getAge()).school(schoolRepository
                                 .findFirstByNameAndAddress(directorSchool.getName(), directorSchool.getAddress())
                                 .orElseThrow()).build();
-                System.err.println(director);
                 directorRepository.save(director);
                 break;
             case STUDENT:
@@ -91,13 +90,11 @@ public class AdminServiceImpl implements AdminService {
                                          .lastName(user.getLastName()).age(user.getAge())
                                          .number(fullDetails.getStudentNumber()).build();
                 studentRepository.save(student);
-                System.err.println(student);
                 break;
             case PARENT:
                 Parent parent = Parent.builder().id(user.getId()).username(user.getUsername())
                                       .password(user.getPassword()).roles(user.getRoles()).name(user.getName())
                                       .lastName(user.getLastName()).age(user.getAge()).kids(new HashSet<>()).build();
-                System.err.println(parent);
                 parentRepository.save(parent);
                 break;
             case TEACHER:
@@ -105,7 +102,6 @@ public class AdminServiceImpl implements AdminService {
                                          .password(user.getPassword()).roles(user.getRoles()).name(user.getName())
                                          .lastName(user.getLastName()).age(user.getAge())
                                          .qualifications(new ArrayList<>()).build();
-                System.err.println(teacher);
                 teacherRepository.save(teacher);
                 break;
         }

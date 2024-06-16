@@ -1,6 +1,9 @@
 package nbu.bg.logisticscompany.model.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.DiscriminatorValue;
@@ -15,7 +18,6 @@ import javax.validation.constraints.Positive;
 @Entity
 @DiscriminatorValue("STUDENT")
 @SuperBuilder
-@ToString
 public class Student extends User {
 
     @Positive
@@ -23,4 +25,10 @@ public class Student extends User {
 
     @ManyToOne
     private Grade grade;
+
+    @Override
+    public String toString() {
+        return String.format("%s - %s %s", getUsername(), getName(), getLastName());
+    }
+
 }

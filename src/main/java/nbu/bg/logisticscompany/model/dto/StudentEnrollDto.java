@@ -2,7 +2,7 @@ package nbu.bg.logisticscompany.model.dto;
 
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -11,10 +11,10 @@ import javax.validation.constraints.NotBlank;
 @ToString
 public class StudentEnrollDto {
 
-    @NotBlank
+    @NotNull
     private Long studentId;
 
-    @NotBlank
+    @NotNull
     private Long gradeId;
 
 }

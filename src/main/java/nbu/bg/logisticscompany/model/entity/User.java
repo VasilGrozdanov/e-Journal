@@ -24,6 +24,7 @@ import java.util.Set;
 @SuperBuilder
 public class User extends BaseEntity {
 
+    @Column(unique = true)
     @NotBlank
     @Size(max = 20)
     private String username;
