@@ -54,7 +54,7 @@
                             <div class="input-group mb-3">
                                 <span class="input-group-text bg-primary"><i class="fa fa-book text-white"></i></span>
                                 <select class="form-control" id="director-subject" name="directorSchool">
-                                    <option th:each="school : ${schools}" th:value="${school}"
+                                    <option th:each="school : ${schools}" th:value="${school.id}"
                                             th:text="${school}"></option>
                                 </select>
                             </div>

@@ -39,6 +39,6 @@ public class UserRegisterDto {
     private Integer studentNumber;
 
     @Nullable
-    private SchoolRegisterDto directorSchool;
+    private Long directorSchool;
 
 }

@@ -11,7 +11,7 @@ import nbu.bg.logisticscompany.service.AdminService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -73,15 +73,15 @@ public class AdminServiceImpl implements AdminService {
                 adminRepository.save(admin);
                 break;
             case DIRECTOR:
-                SchoolRegisterDto directorSchool = fullDetails.getDirectorSchool();
-                if (directorSchool == null) {
-                    throw new EntityExistsException("School doesn't exist");
+                if (fullDetails.getDirectorSchool() == null ||
+                    !schoolRepository.existsById(fullDetails.getDirectorSchool())) {
+                    throw new EntityNotFoundException("School doesn't exist");
                 }
                 Director director = Director.builder().id(user.getId()).username(user.getUsername())
                                             .password(user.getPassword()).roles(user.getRoles()).name(user.getName())
-                                            .lastName(user.getLastName()).age(user.getAge()).school(schoolRepository
-                                .findFirstByNameAndAddress(directorSchool.getName(), directorSchool.getAddress())
-                                .orElseThrow()).build();
+                                            .lastName(user.getLastName()).age(user.getAge())
+                                            .school(schoolRepository.findById(fullDetails.getDirectorSchool()).get())
+                                            .build();
                 directorRepository.save(director);
                 break;
             case STUDENT:
