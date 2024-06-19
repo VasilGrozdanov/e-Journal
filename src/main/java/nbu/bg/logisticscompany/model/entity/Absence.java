@@ -42,4 +42,5 @@ public class Absence {
 
     @Enumerated(EnumType.STRING)
     private AbsenceType type;
+    
 }
