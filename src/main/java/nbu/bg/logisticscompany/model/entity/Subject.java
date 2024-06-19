@@ -28,4 +28,8 @@ public class Subject {
     @NotBlank
     private String name;
 
+    @Override
+    public String toString() {
+        return String.format("%s %s", signature, name);
+    }
 }

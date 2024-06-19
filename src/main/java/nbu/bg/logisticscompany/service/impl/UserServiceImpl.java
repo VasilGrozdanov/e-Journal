@@ -9,6 +9,7 @@ import nbu.bg.logisticscompany.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
@@ -35,6 +36,13 @@ public class UserServiceImpl implements UserService {
             currUser.setUsername(user.getUsername());
         }
         userRepository.save(currUser);
+    }
+
+    @Override
+    public Long getUserIdByUsername(String username) {
+        return userRepository.findByUsername(username)
+                             .orElseThrow(() -> new EntityNotFoundException("User with this username doesn't exist"))
+                             .getId();
     }
 
 }

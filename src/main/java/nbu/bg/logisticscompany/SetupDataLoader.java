@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 
@@ -24,6 +25,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     private AdminRepository adminRepository;
     private SchoolRepository schoolRepository;
     private GradeRepository gradeRepository;
+    private SubjectRepository subjectRepository;
+    private AbsenceRepository absenceRepository;
     private final PasswordEncoder passwordEncoder;
     static boolean alreadySetup = false;
 
@@ -54,6 +57,10 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         School school = School.builder().name(system).address(system).build();
         Grade gradeA = Grade.builder().graduationYear(LocalDate.now()).school(school).letter("A").build();
         Grade gradeB = Grade.builder().graduationYear(LocalDate.now()).school(school).letter("B").build();
+        Subject subject = Subject.builder().signature(system).name(system).build();
+        Absence absence = Absence.builder().teacher(teacher).subject(subject).student(student)
+                                 .systemDate(LocalDateTime.now()).entryDate(LocalDateTime.now()).type(AbsenceType.WHOLE)
+                                 .build();
 
         Director director = Director.builder().roles(new HashSet<>(List.of(new Role("Director")))).username("director")
                                     .password(passwordEncoder.encode("director")).name(system).lastName(system).age(55)
@@ -68,6 +75,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         schoolRepository.save(school);
         gradeRepository.save(gradeA);
         gradeRepository.save(gradeB);
+        subjectRepository.save(subject);
+        absenceRepository.save(absence);
         directorRepository.save(director);
 
         alreadySetup = true;
