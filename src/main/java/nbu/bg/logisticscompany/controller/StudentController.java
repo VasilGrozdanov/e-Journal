@@ -3,6 +3,7 @@ package nbu.bg.logisticscompany.controller;
 
 import lombok.AllArgsConstructor;
 import nbu.bg.logisticscompany.model.entity.Absence;
+import nbu.bg.logisticscompany.model.entity.Evaluates;
 import nbu.bg.logisticscompany.service.StudentService;
 import nbu.bg.logisticscompany.service.UserService;
 import org.springframework.security.core.Authentication;
@@ -35,4 +36,19 @@ public class StudentController {
         return "student-absences";
     }
 
+    @GetMapping("/grades")
+    public String showGradesPage(Authentication authentication, Model model) {
+        if (authentication == null) {
+            throw new RuntimeException();
+        }
+        try {
+            Long studentId = userService.getUserIdByUsername(authentication.getName());
+            List<Evaluates> grades = studentService.getGrades(studentId);
+            model.addAttribute("grades", grades);
+        }
+        catch (Exception e) {
+            return "redirect:/404";
+        }
+        return "student-grades";
+    }
 }
