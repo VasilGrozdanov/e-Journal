@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div class="container" layout:fragment="content">
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-3" th:text="'Welcome to ' + ${companyName}"></h1>
+        <h3 class="display-4"> Your Trusted Logistics Partner </h3>
+        <p class="lead" th:text="'At ' + ${companyName} + ', we redefine logistics by seamlessly connecting supply chains and delivering unparalleled solutions' +
+            'to meet your unique transportation and distribution needs. With a relentless commitment to excellence, we' +
+            'take pride in optimizing your business operations and ensuring the efficient movement of goods across the globe.'">
+
+        </p>
+        <br>
+        <h1 class="display-4">Pricing</h1>
+
+        <div class="container">
+            <div class="card-deck mb-4 text-center">
+                <div class="card mb-4 box-shadow">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">Economy</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">$4.40</h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>Delivery within 1 business days</li>
+                            <li>Up to 3 KG packages</li>
+                            <li>Help center access</li>
+                            <li>Add-on for address delivery $1.48</li>
+                            <br/>
+                        </ul>
+                        <button class="btn btn-lg btn-block btn-outline-primary" type="button">Click here</button>
+                    </div>
+                </div>
+                <div class="card mb-4 box-shadow">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">Premium economy</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">$6.13</h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>Delivery within 1 business days</li>
+                            <li>Up to 10 KG packages</li>
+                            <li>Help center access</li>
+                            <li>Add-on for address delivery $4.25</li>
+                            <br/>
+                        </ul>
+                        <button class="btn btn-lg btn-block btn-primary" type="button">Click here</button>
+                    </div>
+                </div>
+                <div class="card mb-4 box-shadow">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">Priority</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">$14.49</h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>Delivery within 1 business days</li>
+                            <li>Over 10 KG packages</li>
+                            <li>Help center access</li>
+                            <li>Add-on for each additional KG $0.56</li>
+                            <li>Add-on for address delivery $13.98</li>
+                        </ul>
+                        <button class="btn btn-lg btn-block btn-primary" type="button">Click here</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

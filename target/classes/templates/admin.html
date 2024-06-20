@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <script th:inline="javascript">
+        function confirmDelete() {
+            let result = confirm("Warning: This action will delete every record in the database. Are you sure?");
+            return result;
+        }
+    </script>
+</head>
+<body>
+<div class="container" layout:fragment="content">
+
+    <h2>List of Users</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>User ID</th>
+            <th>User Name</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="client: ${clients}">
+            <td class="align-middle" th:text="${client.id}">User 1</td>
+            <td class="align-middle" th:text="${client.username}">User 1</td>
+            <td class="align-middle">
+                <form th:action="@{'/admin/client/update/' + ${client.id}}" th:method="get">
+                    <button class="btn btn-success" onclick="" type="submit"><i class="fa fa-edit"></i>
+                    </button>
+                </form>
+                <br>
+                <form th:action="@{'/admin/client/delete/' + ${client.id}}" th:method="DELETE">
+                    <button class="btn btn-danger" onclick="confirm('Are you sure?')" type="submit"><i
+                            class="fa fa-trash"></i></button>
+                </form>
+                <br>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <h2>List of Staff Employees</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Employee ID</th>
+            <th>Employee Name</th>
+            <th>Employee positions</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee: ${employees}">
+            <td class="align-middle" th:text="${employee.id}">User 1</td>
+            <td class="align-middle" th:text="${employee.username}">User 1</td>
+            <td class="align-middle" th:text="${employee.role}"></td>
+            <td class="align-middle">
+                <form th:action="@{'/admin/employee/' + ${employee.id}}" th:method="get">
+                    <button class="btn btn-success" onclick="" type="submit"><i class="fa fa-edit"></i>
+                    </button>
+                </form>
+                <br>
+                <form th:action="@{'admin/employees/' + ${employee.id}}" th:method="DELETE">
+                    <button class="btn btn-danger" onclick="return confirmDelete()" type="submit"><i
+                            class="fa fa-trash"></i></button>
+                </form>
+                <br>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>Company Data</h2>
+    <div th:if="${company}">
+        <h5>Company Name: <span th:text="${company.name}"></span></h5>
+        <p>Company Address: <span th:text="${company.address}"></span></p>
+
+        <!-- Button to redirect to /company/edit -->
+        <a th:href="@{/company/edit(id=${company.id})}">
+            <button class="btn btn-primary">Edit Company</button>
+        </a>
+
+        <!-- Form to trigger delete with confirmation -->
+        <form id="deleteForm" method="post" onsubmit="return confirmDelete();" th:action="@{/company/delete}">
+            <button class="btn btn-danger" type="submit">Delete Company</button>
+        </form>
+    </div>
+
+    <th:block th:unless="${company}">
+        <a th:href="@{/company/create}">
+            <button class="btn btn-primary">Create Company</button>
+        </a>
+    </th:block>
+</div>
+<script type="text/javascript">
+    function confirmDelete() {
+        if (confirm('Are you sure?')) {
+            document.getElementById('deleteForm').submit();
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+</div>
+</body>
+</html>

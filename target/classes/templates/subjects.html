@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html lang="en" layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div class="container" layout:fragment="content">
+    <div class="py-5 text-center">
+        <h2>Manage Subjects</h2>
+        <p class="lead">Explore and manage all subjects</p>
+    </div>
+
+    <div class="table-responsive-lg">
+
+        <div class="row">
+
+            <div class="col-lg-12 order-lg-1">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col">Signature</th>
+                        <th scope="col">Name</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="subject: ${subjects}">
+                        <th th:text="${subject.signature}">Signature</th>
+                        <td th:text="${subject.name}">Name</td>
+                        <td>
+                            <form th:action="@{'/subject/update/' + ${subject.signature}}" th:method="get">
+                                <button class="btn btn-success" type="submit"><i class="fa fa-edit"></i></button>
+                            </form>
+                            <form th:action="@{'/subject/delete/' + ${subject.signature}}" th:method="DELETE">
+                                <button class="btn btn-danger" onclick="confirm('Are you sure?')" type="submit">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+                <form th:action="@{/subject/create}" th:method="get">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>
