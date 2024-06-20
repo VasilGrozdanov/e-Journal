@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html lang="en" layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div class="container" layout:fragment="content">
+    <div class="py-5 text-center">
+        <h2>Update office</h2>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12 order-md-1">
+
+            <h4 class="mb-3">Subject details</h4>
+
+            <form th:action="@{'/subject/update/' + ${subject.signature}}" th:method="PUT" th:object="${subject}">
+
+                <hr class="mb-4">
+
+                <div class="mb-3">
+                    <h5 class="d-flex mb-3">
+                        <span class="text-muted">Subject Signature is:&nbsp;&nbsp;&nbsp;</span>
+                        <span class="badge badge-secondary padding-right: 0.6em; padding-left: 0.6em;"><div
+                                class="margin-bottom: .0rem !important" th:text=" ${subject.signature} "></div></span>
+                    </h5>
+                </div>
+
+                <hr class="mb-4">
+
+                <div class="mb-3">
+                    <label for="name">Signature Name</label>
+                    <input class="form-control" id="name" placeholder="1234 Main St" required
+                           th:field="*{name}" type="text">
+                    <div class="invalid-feedback">
+                        <span th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></span>
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Update Subject</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

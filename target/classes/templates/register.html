@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html lang="en" layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div class="container" layout:fragment="content">
+
+    <div class="" style="margin-top:200px">
+        <div class="rounded d-flex justify-content-center">
+            <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
+                <div class="text-center">
+                    <h3 class="text-primary">Create a new user</h3>
+                </div>
+                <div class="p-4">
+                    <p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+                    <form method="post" th:action="@{/register}">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-user text-white"></i></span>
+                            <input class="form-control" id="username" name="username" placeholder="Username"
+                                   type="text" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-lock text-white"></i></span>
+                            <input class="form-control" id="password" name="password" placeholder="Password"
+                                   type="password" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-lock text-white"></i></span>
+                            <input class="form-control" id="matching-password" name="matchingPassword"
+                                   placeholder="Confirm password" type="password">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-lock text-white"></i></span>
+                            <input class="form-control" id="first-name" name="firstName"
+                                   placeholder="FIrst name" type="firstName" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-lock text-white"></i></span>
+                            <input class="form-control" id="last-name" name="lastName"
+                                   placeholder="Last name" type="lastName" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-user text-white"></i></span>
+                            <input class="form-control" id="age" name="age" placeholder="Age" type="number" required
+                                   min="1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-lock text-white"></i></span>
+                            <select class="form-control" id="role" name="role" required
+                                    onchange="showAdditionalFields()">
+                                <option th:each="role : ${roles}" th:value="${role.name}"
+                                        th:text="${role.name}"></option>
+                            </select>
+                        </div>
+                        <div class="additional-field Director-only" style="display: none;">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-primary"><i class="fa fa-book text-white"></i></span>
+                                <select class="form-control" id="director-subject" name="directorSchool">
+                                    <option th:each="school : ${schools}" th:value="${school.id}"
+                                            th:text="${school}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="additional-field Student-only" style="display: none;">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-primary"><i class="fa fa-school text-white"></i></span>
+                                <input class="form-control" id="student-number" name="studentNumber"
+                                       placeholder="Number" type="number" min="1">
+                            </div>
+                        </div>
+                        <div class="d-grid col-12 mx-auto">
+                            <button class="btn btn-primary" type="submit"><span></span> Register</button>
+                        </div>
+                        <p class="text-center mt-3">Already have a profile?
+                            <span class="text-primary" id="sign-in-button">Log in</span>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var signInButton = document.querySelector("#sign-in-button");
+        signInButton.addEventListener('mouseenter', () => signInButton.classList.add('border', 'border-primary'))
+        signInButton.addEventListener('mouseleave', () => signInButton.classList.remove('border', 'border-primary'))
+
+        signInButton.addEventListener('click', () => window.location.replace("/login"))
+
+
+        function showAdditionalFields() {
+            const role = document.querySelector('#role').value.toUpperCase();
+            const directorFields = document.querySelectorAll('.Director-only');
+            const studentFields = document.querySelectorAll('.Student-only');
+
+            directorFields.forEach(field => field.style.display = 'none');
+            studentFields.forEach(field => field.style.display = 'none');
+
+            if (role === 'DIRECTOR') {
+                directorFields.forEach(field => field.style.display = 'block');
+            } else if (role === 'STUDENT') {
+                studentFields.forEach(field => field.style.display = 'block');
+            }
+        }
+    </script>
+</div>
+</body>
+</html>

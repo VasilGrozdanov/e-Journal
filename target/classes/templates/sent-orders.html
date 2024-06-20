@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html lang="en" layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div class="container" layout:fragment="content">
+    <div class="py-5 text-center">
+        <h2>Deliver an order</h2>
+        <p class="lead">At UPS, we value your business, and this Order History page is designed with your convenience in
+            mind. Explore your past orders, track deliveries, and enjoy a seamless shipping experience with us.:</p>
+    </div>
+
+    <div class="table-responsive-lg">
+
+        <div class="row">
+
+            <div class="col-lg-12 order-lg-1">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Sender</th>
+                        <th scope="col">Receiver</th>
+                        <th scope="col">Delivery Address</th>
+                        <th scope="col">Office delivery?</th>
+                        <th scope="col">Weight</th>
+                        <th scope="col">Total price</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="order: ${sentOrders}">
+                        <th th:text="${order.id}"></th>
+                        <td th:text="${order.orderStatus}">Status</td>
+                        <td th:text="${order.senderUsername}">Sender</td>
+                        <td th:text="${order.receiverUsername}">Receiver</td>
+                        <td th:text="${order.deliveryAddress}">Delivery Address</td>
+                        <td th:text="${order.isOfficeDelivery}">Office delivery?</td>
+                        <td th:text="${order.weight}">Weight</td>
+                        <td th:text="${order.totalPrice}">Total price</td>
+                    <tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</body>

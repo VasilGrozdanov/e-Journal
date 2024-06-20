@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html lang="en" layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div class="container" layout:fragment="content">
+    <div class="py-5 text-center">
+        <h2>View your orders</h2>
+        <p class="lead">At UPS, we value your business, and this Order History page is designed with your convenience in
+            mind. Explore your past orders, track deliveries, and enjoy a seamless shipping experience with us.:</p>
+    </div>
+
+    <div class="rounded d-flex justify-content-center">
+
+        <a class="btn btn-primary text-center mt-2" href="/client/received" id="sent-button" type="submit">
+            Received
+        </a>
+
+        <!-- Add space between buttons -->
+        <div style="width: 10px;"></div>
+
+        <a class="btn btn-primary text-center mt-2" href="/client/sent" id="received-button" style="margin-left: 10px;"
+           type="submit">
+            Sent
+        </a>
+
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html lang="en" layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div class="container" layout:fragment="content">
+
+    <div class="" style="margin-top:200px">
+        <div class="rounded d-flex justify-content-center">
+            <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
+                <div class="text-center">
+                    <h3 class="text-primary">Enroll a student in grade</h3>
+                </div>
+                <div class="p-4">
+                    <p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+                    <form method="post" th:action="@{/enrollStudent}">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-book text-white"></i></span>
+                            <select class="form-control" id="student-id" name="studentId">
+                                <option th:each="student : ${students}" th:value="${student.id}"
+                                        th:text="${student}"></option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-book text-white"></i></span>
+                            <select class="form-control" id="grade-id" name="gradeId">
+                                <option th:each="grade : ${grades}" th:value="${grade.id}"
+                                        th:text="${grade}"></option>
+                            </select>
+                        </div>
+                        <div class="d-grid col-12 mx-auto">
+                            <button class="btn btn-primary" type="submit"><span></span> Enroll</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
