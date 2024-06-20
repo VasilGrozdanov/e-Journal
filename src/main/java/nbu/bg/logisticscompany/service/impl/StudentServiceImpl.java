@@ -3,8 +3,11 @@ package nbu.bg.logisticscompany.service.impl;
 import groovy.util.logging.Slf4j;
 import lombok.AllArgsConstructor;
 import nbu.bg.logisticscompany.model.entity.Absence;
+import nbu.bg.logisticscompany.model.entity.Evaluates;
 import nbu.bg.logisticscompany.model.entity.Student;
 import nbu.bg.logisticscompany.repository.AbsenceRepository;
+import nbu.bg.logisticscompany.repository.EvaluatesRepository;
+import nbu.bg.logisticscompany.repository.GradeRepository;
 import nbu.bg.logisticscompany.repository.StudentRepository;
 import nbu.bg.logisticscompany.service.StudentService;
 import org.springframework.stereotype.Service;
@@ -19,12 +22,20 @@ import java.util.List;
 public class StudentServiceImpl implements StudentService {
     private StudentRepository studentRepository;
     private AbsenceRepository absenceRepository;
+    private EvaluatesRepository evaluatesRepository;
 
     @Override
     public List<Absence> getAbsences(Long studentId) {
         Student existingStudent = studentRepository.findById(studentId).orElseThrow(
                 () -> new EntityNotFoundException("Student with this id doesn't exist"));
         return absenceRepository.findAllByStudent(existingStudent);
+    }
+
+    @Override
+    public List<Evaluates> getGrades(Long studentId) {
+        Student existingStudent = studentRepository.findById(studentId).orElseThrow(
+                () -> new EntityNotFoundException("Student with this id doesn't exist"));
+        return evaluatesRepository.findAllByStudent(existingStudent);
     }
 
 }
