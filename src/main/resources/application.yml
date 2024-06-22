@@ -4,7 +4,7 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/schooljournal?createDatabaseIfNotExist=true&useSSL=true&serverTimezone=UTC
 
     username: root
-    password: Dimikal66.
+    password: 56765
   jpa:
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL55Dialect

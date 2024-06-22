@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>nbu.bg</groupId>
-    <artifactId>logistics-company</artifactId>
+    <artifactId>e-Journal</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>logistics-company</name>
+    <name>e-Journal</name>
     <description>Springboot project</description>
     <properties>
         <java.version>11</java.version>

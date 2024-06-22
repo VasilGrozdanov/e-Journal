@@ -13,14 +13,15 @@
                     <p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
                     <form method="post" th:action="@{/enrollStudent}">
                         <div class="input-group mb-3">
-                            <span class="input-group-text bg-primary"><i class="fa fa-book text-white"></i></span>
+                            <span class="input-group-text bg-primary"><i class="fa fa-book text-white">&nbspStudent:&nbsp</i></span>
                             <select class="form-control" id="student-id" name="studentId">
                                 <option th:each="student : ${students}" th:value="${student.id}"
                                         th:text="${student}"></option>
                             </select>
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text bg-primary"><i class="fa fa-book text-white"></i></span>
+                            <span class="input-group-text bg-primary"><i
+                                    class="fa fa-book text-white">&nbspGrade:&nbsp</i></span>
                             <select class="form-control" id="grade-id" name="gradeId">
                                 <option th:each="grade : ${grades}" th:value="${grade.id}"
                                         th:text="${grade}"></option>

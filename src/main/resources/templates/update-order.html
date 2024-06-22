@@ -30,7 +30,7 @@
 
                 <div class="mb-3">
                     <div class="form-check">
-                        <div th:each="status : ${T(nbu.bg.logisticscompany.model.entity.OrderStatus).values()}">
+                        <div th:each="status : ${T(nbu.bg.electronicjournal.model.entity.OrderStatus).values()}">
                             <input class="form-check-input" id="status" name="${status}" required
                                    th:field="*{orderStatus}" th:value="${status}" type="radio"/>
                             <label class=" form-check-label" for="status" th:text="${status}"></label>
@@ -42,7 +42,7 @@
 
                 <div class="mb-3">
                     <label for="senderUsername">Sender username</label>
-                    <input type="text" th:field="*{senderUsername}" class="form-control" id="senderUsername"  required>
+                    <input type="text" th:field="*{senderUsername}" class="form-control" id="senderUsername" required>
                     <div class="invalid-feedback">
                         <span th:if="${#fields.hasErrors('senderUsername')}" th:errors="*{senderUsername}"></span>
                     </div>
@@ -50,7 +50,8 @@
 
                 <div class="mb-3">
                     <label for="receiverUsername">Receiver username</label>
-                    <input type="text" th:field="*{receiverUsername}" class="form-control" id="receiverUsername"  required>
+                    <input type="text" th:field="*{receiverUsername}" class="form-control" id="receiverUsername"
+                           required>
                     <div class="invalid-feedback">
                         <span th:if="${#fields.hasErrors('receiverUsername')}" th:errors="*{receiverUsername}"></span>
                     </div>
@@ -78,7 +79,8 @@
 
                 <div class="mb-3">
                     <label for="isOfficeDelivery">Package weight</label>
-                    <input class="form-control" id="weight" min="0" oninput="calculateTotal()" step="0.01" th:field="*{weight}"
+                    <input class="form-control" id="weight" min="0" oninput="calculateTotal()" step="0.01"
+                           th:field="*{weight}"
                            type="number">
                     <div class="invalid-feedback">
                         <span th:errors="*{weight}" th:if="${#fields.hasErrors('weight')}"></span>
@@ -90,7 +92,8 @@
 
                 <div class="input-group mb-3">
                     <span class="input-group-text">$</span>
-                    <input aria-describedby="button-addon2" class="form-control" id="totalPrice" min="0" oninput="calculateTotal()"
+                    <input aria-describedby="button-addon2" class="form-control" id="totalPrice" min="0"
+                           oninput="calculateTotal()"
                            step="0.01" th:field="*{totalPrice}" type="number">
                     <button class="btn btn-outline-secondary" id="button-addon2" onclick="calculateTotal()"
                             type="button">Calculate
