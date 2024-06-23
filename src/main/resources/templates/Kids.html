@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html lang="en" layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div class="container" layout:fragment="content">
+    <div class="py-5 text-center">
+        <h2>Manage Qualifications</h2>
+        <p class="lead">Explore and manage all qualifications by teacher</p>
+    </div>
+
+    <div class="table-responsive-lg">
+        <div class="row">
+            <div class="col-lg-12 order-lg-1">
+                <!-- Teacher Selection Dropdown -->
+                <form th:action="@{/gradesOfKids}" method="get" onchange="this.form.submit()">
+                    <div>
+                        <span class="input-group-text bg-primary"><i class="fa fa-book text-white"></i></span>
+                        <select class="form-control" id="kid-select" name="studentId" onchange="this.form.submit()">
+
+                            <option value="0" disabled selected>Select a child</option>
+                            <option th:each="kid : ${kids}" th:value="${kid.id}"
+                                    th:text="${kid.username}+' '+${kid.name}+' '+${kid.lastName}"></option>
+                        </select>
+                    </div>
+                </form>
+
+                <!-- Display selected teacher's name -->
+                <div th:if="${selectedStudent != null}" class="mt-3">
+                    <h3 th:text="'Grades for a child: username - '+${selectedStudent.username}+', full name - '+${selectedStudent.name}+' '+${selectedStudent.lastName}"></h3>
+                </div>
+
+                <!-- Grades Table -->
+                <table class="table table-hover table-bordered" >
+                    <thead>
+                    <tr>
+                        <th scope="col">Teacher</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Mark</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${grades != null}" th:each="grade : ${grades}">
+                        <td th:text="${grade.teacher.name} + ' '+ ${grade.teacher.lastName}">Teacher</td>
+                        <td th:text="${grade.subject.signature} + ' '+ ${grade.subject.name}">Subject</td>
+                        <td th:text="${grade.entryDate}">Date</td>
+                        <td th:text="${grade.mark}">Mark</td>
+
+
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

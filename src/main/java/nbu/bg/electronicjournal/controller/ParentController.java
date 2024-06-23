@@ -33,9 +33,18 @@ public class ParentController {
     public String showGradesPages(@RequestParam(name = "studentId", required = false) Long studentId,
             Authentication authentication, Model model) {
 
+        if (authentication == null) {
+            throw new RuntimeException();
+        }
+
         try {
+
             Long parentId = userService.getUserIdByUsername(authentication.getName());
             Set<Student> students = parentService.getKids(parentId);
+            model.addAttribute("kids", students);
+            if (studentId == null) {
+                return "Kids";
+            }
             Student student = studentService.getStudent(studentId);
 
             if (!students.contains(student)) {
@@ -43,14 +52,14 @@ public class ParentController {
             }
 
             List<Evaluates> grades = studentService.getGrades(studentId);
-            model.addAttribute("student", student);
+            model.addAttribute("selectedStudent", student);
             model.addAttribute("grades", grades);
-            model.addAttribute("kids", students);
+
 
         }
         catch (Exception e) {
             return "redirect:/404";
         }
-        return "student-grades";
+        return "Kids";
     }
 }
