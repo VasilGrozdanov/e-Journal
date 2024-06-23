@@ -1,5 +1,6 @@
 package nbu.bg.electronicjournal.service;
 
+import nbu.bg.electronicjournal.model.dto.ProgramDto;
 import nbu.bg.electronicjournal.model.dto.QualificationDto;
 import nbu.bg.electronicjournal.model.dto.StudentEnrollDto;
 import nbu.bg.electronicjournal.model.dto.SubjectDto;
@@ -24,6 +25,8 @@ public interface DirectorService {
     boolean updateQualification(Long teacherId, String oldSubjectSignature, String newSubjectSignature, Long schoolId);
 
     boolean removeQualification(Long teacherId, String subjectSignature, Long schoolId);
+
+    boolean addProgram(ProgramDto newProgram, Long schoolId);
 
 
     List<Grade> getGrades();

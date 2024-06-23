@@ -47,4 +47,7 @@ public class User extends BaseEntity {
     @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    public String getFullName() {
+        return String.format("%s %s", name, lastName);
+    }
 }

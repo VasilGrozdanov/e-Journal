@@ -2,6 +2,8 @@ package nbu.bg.electronicjournal.service.impl;
 
 import groovy.util.logging.Slf4j;
 import lombok.AllArgsConstructor;
+import nbu.bg.electronicjournal.exceptions.TeacherNotQualifiedException;
+import nbu.bg.electronicjournal.model.dto.ProgramDto;
 import nbu.bg.electronicjournal.model.dto.QualificationDto;
 import nbu.bg.electronicjournal.model.dto.StudentEnrollDto;
 import nbu.bg.electronicjournal.model.dto.SubjectDto;
@@ -16,6 +18,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -125,6 +128,23 @@ public class DirectorServiceImpl implements DirectorService {
             existingTeacher.getQualifications().remove(existingQualification);
             qualificationRepository.delete(existingQualification);
         }
+        return true;
+    }
+
+    @Override
+    public boolean addProgram(ProgramDto newProgram, Long schoolId) {
+        newProgram.getSubjectsTeached().forEach(subjectTeached -> {
+            Subject subject = subjectService.getSubject(subjectTeached.getSubjectSignature());
+            Teacher teacher = teacherService.getTeacherWithQualifications(subjectTeached.getTeacherId());
+            Set<Subject> qualifiedSubjects = teacher.getQualifications().stream()
+                                                    .filter(qualification -> qualification.getSchool().getId()
+                                                                                          .equals(schoolId)).findFirst()
+                                                    .orElseThrow().getSubjects();
+            if (!qualifiedSubjects.contains(subject)) {
+                throw new TeacherNotQualifiedException(teacher.getFullName(), subject.toString());
+            }
+        });
+
         return true;
     }
 

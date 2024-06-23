@@ -42,8 +42,8 @@ public class GlobalExceptionHandler {
     }
 
     //Added exception handling for the Company
-    @ExceptionHandler(CompanyNotFoundException.class)
-    public String handleCompanyNotFound(final CompanyNotFoundException exception) {
+    @ExceptionHandler(TeacherNotQualifiedException.class)
+    public String handleCompanyNotFound(final TeacherNotQualifiedException exception) {
         log.error(exception.getMessage());
         return "redirect:/company";
     }
