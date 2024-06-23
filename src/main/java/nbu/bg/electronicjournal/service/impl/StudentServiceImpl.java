@@ -24,6 +24,12 @@ public class StudentServiceImpl implements StudentService {
     private EvaluatesRepository evaluatesRepository;
 
     @Override
+    public Student getStudent(Long studentId) {
+        return studentRepository.findById(studentId)
+                                .orElseThrow(() -> new EntityNotFoundException("Student with this id doesn't exist"));
+    }
+
+    @Override
     public List<Absence> getAbsences(Long studentId) {
         Student existingStudent = studentRepository.findById(studentId).orElseThrow(
                 () -> new EntityNotFoundException("Student with this id doesn't exist"));
