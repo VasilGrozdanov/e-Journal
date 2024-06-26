@@ -14,4 +14,6 @@ public interface StudentService {
     List<Evaluates> getGrades(Long studentId);
 
     double calculateGPA(List<Evaluates> grades);
+
+    double calculateTotalAbsences(List<Absence> absences);
 }

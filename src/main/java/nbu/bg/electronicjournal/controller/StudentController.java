@@ -29,6 +29,9 @@ public class StudentController {
             Long studentId = userService.getUserIdByUsername(authentication.getName());
             List<Absence> absences = studentService.getAbsences(studentId);
             model.addAttribute("absences", absences);
+            // Calculate total number of absences
+            double totalAbsences = studentService.calculateTotalAbsences(absences);
+            model.addAttribute("totalAbsences", totalAbsences);
         }
         catch (Exception e) {
             return "redirect:/404";

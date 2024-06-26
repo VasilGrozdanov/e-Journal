@@ -3,6 +3,7 @@ package nbu.bg.electronicjournal.service.impl;
 import groovy.util.logging.Slf4j;
 import lombok.AllArgsConstructor;
 import nbu.bg.electronicjournal.model.entity.Absence;
+import nbu.bg.electronicjournal.model.entity.AbsenceType;
 import nbu.bg.electronicjournal.model.entity.Evaluates;
 import nbu.bg.electronicjournal.model.entity.Student;
 import nbu.bg.electronicjournal.repository.AbsenceRepository;
@@ -56,5 +57,24 @@ public class StudentServiceImpl implements StudentService {
 
         return total / grades.size();
     }
+
+    @Override
+    public double calculateTotalAbsences(List<Absence> absences) {
+        if (absences.isEmpty()) {
+            return 0.0;
+        }
+
+        double total = 0.0;
+        for (Absence absence : absences) {
+            if (absence.getType() == AbsenceType.WHOLE) {
+                total += 1;
+            } else if (absence.getType() == AbsenceType.PARTIAL) {
+                total += 0.5;
+            }
+        }
+
+        return total;
+    }
+
 
 }
