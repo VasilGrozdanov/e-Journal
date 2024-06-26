@@ -84,6 +84,9 @@ public class ParentController {
             List<Absence> absence = studentService.getAbsences(studentId);
             model.addAttribute("selectedStudent", student);
             model.addAttribute("absences", absence);
+            // Calculate total number of absences
+            double totalAbsences = studentService.calculateTotalAbsences(absence);
+            model.addAttribute("totalAbsences", totalAbsences);
 
 
         }

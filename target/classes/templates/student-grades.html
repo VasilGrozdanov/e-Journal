@@ -3,7 +3,7 @@
 <body>
 <div class="container" layout:fragment="content">
     <div class="py-5 text-center">
-        <h2>See Grades</h2>
+        <h2>Grades</h2>
         <p class="lead">Explore your grades</p>
     </div>
 
@@ -28,6 +28,10 @@
                         <td th:text="${grade.subject}">Subject</td>
                         <td th:text="${grade.entryDate}">Date</td>
                         <td th:text="${grade.mark}">Mark</td>
+                    </tr>
+                    <tr>
+                        <th colspan="3" class="text-right">GPA</th>
+                        <td th:text="${gpa}">GPA</td>
                     </tr>
                     </tbody>
 

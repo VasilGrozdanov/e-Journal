@@ -3,7 +3,7 @@
 <body>
 <div class="container" layout:fragment="content">
     <div class="py-5 text-center">
-        <h2>See absences</h2>
+        <h2>Absences</h2>
         <p class="lead">Explore your absences</p>
     </div>
 
@@ -28,6 +28,10 @@
                         <td th:text="${absence.subject}">Subject</td>
                         <td th:text="${absence.entryDate}">Date</td>
                         <td th:text="${absence.type}">Type</td>
+                    </tr>
+                    <tr>
+                        <th colspan="3" class="text-right">Total Number of Absences</th>
+                        <td th:text="${totalAbsences}">Total Number of Absences</td>
                     </tr>
                     </tbody>
 
