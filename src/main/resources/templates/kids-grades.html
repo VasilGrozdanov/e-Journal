@@ -3,8 +3,8 @@
 <body>
 <div class="container" layout:fragment="content">
     <div class="py-5 text-center">
-        <h2>Manage Qualifications</h2>
-        <p class="lead">Explore and manage all qualifications by teacher</p>
+        <h2>Grades</h2>
+        <p class="lead">Explore your children's grades</p>
     </div>
 
     <div class="table-responsive-lg">
@@ -44,8 +44,11 @@
                         <td th:text="${grade.subject.signature} + ' '+ ${grade.subject.name}">Subject</td>
                         <td th:text="${grade.entryDate}">Date</td>
                         <td th:text="${grade.mark}">Mark</td>
+                    </tr>
 
-
+                    <tr>
+                        <th colspan="3" class="text-right">GPA</th>
+                        <td th:text="${gpa}">GPA</td>
                     </tr>
                     </tbody>
                 </table>

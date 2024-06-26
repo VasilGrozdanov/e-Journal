@@ -1,6 +1,7 @@
 package nbu.bg.electronicjournal.controller;
 
 import lombok.AllArgsConstructor;
+import nbu.bg.electronicjournal.model.entity.Absence;
 import nbu.bg.electronicjournal.model.entity.Evaluates;
 import nbu.bg.electronicjournal.model.entity.Student;
 import nbu.bg.electronicjournal.service.ParentService;
@@ -23,12 +24,6 @@ public class ParentController {
     private UserService userService;
     private ParentService parentService;
 
-
-    //    @ModelAttribute("kids")
-    //    public Set<Student> getKids() {
-    //         return parentService.getKids(parentId);
-    //     }
-
     @GetMapping("/gradesOfKids")
     public String showGradesPages(@RequestParam(name = "studentId", required = false) Long studentId,
             Authentication authentication, Model model) {
@@ -38,12 +33,11 @@ public class ParentController {
         }
 
         try {
-
             Long parentId = userService.getUserIdByUsername(authentication.getName());
             Set<Student> students = parentService.getKids(parentId);
             model.addAttribute("kids", students);
             if (studentId == null) {
-                return "Kids";
+                return "kids-grades";
             }
             Student student = studentService.getStudent(studentId);
 
@@ -54,12 +48,48 @@ public class ParentController {
             List<Evaluates> grades = studentService.getGrades(studentId);
             model.addAttribute("selectedStudent", student);
             model.addAttribute("grades", grades);
+            // Calculate GPA
+            double gpa = studentService.calculateGPA(grades);
+            model.addAttribute("gpa", gpa);
 
 
         }
         catch (Exception e) {
             return "redirect:/404";
         }
-        return "Kids";
+        return "kids-grades";
+    }
+
+    @GetMapping("/absenceOfKids")
+    public String showAbsencePages(@RequestParam(name = "studentId", required = false) Long studentId,
+                                  Authentication authentication, Model model) {
+
+        if (authentication == null) {
+            throw new RuntimeException();
+        }
+
+        try {
+            Long parentId = userService.getUserIdByUsername(authentication.getName());
+            Set<Student> students = parentService.getKids(parentId);
+            model.addAttribute("kids", students);
+            if (studentId == null) {
+                return "kids-absence";
+            }
+            Student student = studentService.getStudent(studentId);
+
+            if (!students.contains(student)) {
+                throw new RuntimeException("Kid not found");
+            }
+
+            List<Absence> absence = studentService.getAbsences(studentId);
+            model.addAttribute("selectedStudent", student);
+            model.addAttribute("absences", absence);
+
+
+        }
+        catch (Exception e) {
+            return "redirect:/404";
+        }
+        return "kids-absence";
     }
 }

@@ -43,4 +43,18 @@ public class StudentServiceImpl implements StudentService {
         return evaluatesRepository.findAllByStudent(existingStudent);
     }
 
+    @Override
+    public double calculateGPA(List<Evaluates> grades) {
+        if (grades.isEmpty()) {
+            return 0.0;
+        }
+
+        double total = 0.0;
+        for (Evaluates grade : grades) {
+            total += grade.getMark();
+        }
+
+        return total / grades.size();
+    }
+
 }

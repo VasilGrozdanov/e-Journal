@@ -45,6 +45,9 @@ public class StudentController {
             Long studentId = userService.getUserIdByUsername(authentication.getName());
             List<Evaluates> grades = studentService.getGrades(studentId);
             model.addAttribute("grades", grades);
+            // Calculate GPA
+            double gpa = studentService.calculateGPA(grades);
+            model.addAttribute("gpa", gpa);
         }
         catch (Exception e) {
             return "redirect:/404";
