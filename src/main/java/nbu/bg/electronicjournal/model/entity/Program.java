@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -37,5 +37,5 @@ public class Program {
     private LocalDate end;
 
     @ManyToMany
-    private List<SubjectTeachedBy> subjectsTeached;
+    private Set<SubjectTeachedBy> subjectsTeached;
 }

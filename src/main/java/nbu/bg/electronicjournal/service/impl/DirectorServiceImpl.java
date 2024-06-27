@@ -140,7 +140,7 @@ public class DirectorServiceImpl implements DirectorService {
 
     @Override
     public boolean addProgram(ProgramDto newProgram, Long schoolId) {
-        List<SubjectTeachedBy> subjectsTeached = checkTeachersAreQualifiedForSubjects(newProgram, schoolId);
+        Set<SubjectTeachedBy> subjectsTeached = checkTeachersAreQualifiedForSubjects(newProgram, schoolId);
         Grade grade = gradeRepository.findById(newProgram.getGradeId()).orElseThrow();
         programRepository.save(
                 new Program(newProgram.getSemester(), grade, newProgram.getStart().atStartOfDay().toLocalDate(),
@@ -150,15 +150,10 @@ public class DirectorServiceImpl implements DirectorService {
 
     @Override
     public boolean updateProgram(ProgramDto updatedProgram, Long schoolId) {
-        checkTeachersAreQualifiedForSubjects(updatedProgram, schoolId);
+        Set<SubjectTeachedBy> subjectTeached = checkTeachersAreQualifiedForSubjects(updatedProgram, schoolId);
         Program program = programService.getProgram(updatedProgram.getSemester(), updatedProgram.getGradeId(),
                 updatedProgram.getStart(), updatedProgram.getEnd());
-        program.setSubjectsTeached(updatedProgram.getSubjectsTeached().stream()
-                                                 .map(subjectsTeached -> subjectTeachedByRepository
-                                                         .findByTeacherIdAndSubjectSignature(
-                                                                 subjectsTeached.getTeacherId(),
-                                                                 subjectsTeached.getSubjectSignature()).orElseThrow())
-                                                 .collect(Collectors.toList()));
+        program.setSubjectsTeached(subjectTeached);
         programRepository.save(program);
         return true;
     }
@@ -190,14 +185,16 @@ public class DirectorServiceImpl implements DirectorService {
     }
 
     @Transactional
-    protected List<SubjectTeachedBy> checkTeachersAreQualifiedForSubjects(ProgramDto newProgram, Long schoolId) {
-        return newProgram.getSubjectsTeached().stream().map(subjectTeached -> {
+    protected Set<SubjectTeachedBy> checkTeachersAreQualifiedForSubjects(ProgramDto programDto, Long schoolId) {
+        return programDto.getSubjectsTeached().stream().map(subjectTeached -> {
             Subject subject = subjectService.getSubject(subjectTeached.getSubjectSignature());
             Teacher teacher = teacherService.getTeacherWithQualifications(subjectTeached.getTeacherId());
             Set<Subject> qualifiedSubjects = teacher.getQualifications().stream()
                                                     .filter(qualification -> qualification.getSchool().getId()
                                                                                           .equals(schoolId)).findFirst()
-                                                    .orElseThrow().getSubjects();
+                                                    .orElseThrow(() -> new EntityNotFoundException(
+                                                            String.format("%s is not qualified to teach %s",
+                                                                    teacher.getFullName(), subject))).getSubjects();
             if (!qualifiedSubjects.contains(subject)) {
                 throw new TeacherNotQualifiedException(teacher.getFullName(), subject.toString());
             }
@@ -207,7 +204,7 @@ public class DirectorServiceImpl implements DirectorService {
                 subjectTeachedByRepository.save(subjectTeachedBy);
                 return subjectTeachedBy;
             });
-        }).collect(Collectors.toList());
+        }).collect(Collectors.toSet());
     }
 
 }
