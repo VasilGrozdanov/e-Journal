@@ -5,6 +5,7 @@ import nbu.bg.electronicjournal.model.entity.Semester;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,6 +29,6 @@ public class ProgramDto {
     @Future
     private LocalDate end;
 
-    @NotNull
+    @NotEmpty
     private List<QualificationDto> subjectsTeached;
 }
