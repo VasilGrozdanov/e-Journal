@@ -4,10 +4,9 @@ import nbu.bg.electronicjournal.model.dto.ProgramDto;
 import nbu.bg.electronicjournal.model.dto.QualificationDto;
 import nbu.bg.electronicjournal.model.dto.StudentEnrollDto;
 import nbu.bg.electronicjournal.model.dto.SubjectDto;
-import nbu.bg.electronicjournal.model.entity.Director;
-import nbu.bg.electronicjournal.model.entity.Grade;
-import nbu.bg.electronicjournal.model.entity.Student;
+import nbu.bg.electronicjournal.model.entity.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface DirectorService {
@@ -28,6 +27,9 @@ public interface DirectorService {
 
     boolean addProgram(ProgramDto newProgram, Long schoolId);
 
+    boolean updateProgram(ProgramDto newProgram, Long schoolId);
+    
+    void removeProgram(Semester semester, Long gradeId, LocalDate start, LocalDate end);
 
     List<Grade> getGrades();
 
@@ -35,4 +37,5 @@ public interface DirectorService {
 
     List<Student> getStudents();
 
+    List<Program> getPrograms(School school);
 }

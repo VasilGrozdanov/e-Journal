@@ -3,9 +3,7 @@ package nbu.bg.electronicjournal.controller;
 import lombok.AllArgsConstructor;
 import nbu.bg.electronicjournal.annotation.security.isAdmin;
 import nbu.bg.electronicjournal.annotation.security.isDirector;
-import nbu.bg.electronicjournal.model.dto.QualificationDto;
-import nbu.bg.electronicjournal.model.dto.StudentEnrollDto;
-import nbu.bg.electronicjournal.model.dto.SubjectDto;
+import nbu.bg.electronicjournal.model.dto.*;
 import nbu.bg.electronicjournal.model.entity.*;
 import nbu.bg.electronicjournal.service.*;
 import org.springframework.security.core.Authentication;
@@ -18,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 
@@ -39,6 +38,11 @@ public class DirectorController {
     @ModelAttribute("students")
     public List<Student> getStudents() {
         return directorService.getStudents();
+    }
+
+    @ModelAttribute("semesters")
+    public Semester[] getSemetsers() {
+        return Semester.values();
     }
 
     @isDirector
@@ -71,7 +75,7 @@ public class DirectorController {
     @isDirector
     @GetMapping("/subjects")
     public String showSubjectsPage(Model model) {
-        List<Subject> subjects = subjectService.getSubjects();
+        List<Subject> subjects = subjectService.getAll();
         model.addAttribute("subjects", subjects);
         return "subjects";
     }
@@ -130,7 +134,7 @@ public class DirectorController {
 
     @ModelAttribute("subjects")
     public List<Subject> getSubjects() {
-        return subjectService.getSubjects();
+        return subjectService.getAll();
     }
 
     @isDirector
@@ -217,6 +221,94 @@ public class DirectorController {
             return "redirect:/qualifications";
         }
         return "redirect:/qualifications";
+    }
+
+
+    @isDirector
+    @GetMapping("/programs")
+    public String showPrograms(Authentication authentication, Model model, HttpServletRequest request) {
+        if (authentication == null) {
+            throw new RuntimeException();
+        }
+        try {
+            Long directorId = userService.getUserIdByUsername(authentication.getName());
+            model.addAttribute("programs",
+                    directorService.getPrograms(directorService.getDirector(directorId).getSchool()));
+        }
+        catch (Exception ex) {
+            return "redirect:/404";
+        }
+        return "programs";
+    }
+
+
+    @isDirector
+    @GetMapping("/program/add")
+    public String showAddProgramPage() {
+        return "add-program";
+    }
+
+    @isDirector
+    @PostMapping("/program/add")
+    public String addProgram(Authentication authentication, @ModelAttribute("program") @Valid ProgramDto programDto,
+            BindingResult result, Model model, HttpServletRequest request) {
+        if (result.hasErrors()) {
+            model.addAttribute("errorMessage", result.getAllErrors());
+            return "add-program";
+        }
+        if (authentication == null) {
+            throw new RuntimeException();
+        }
+        try {
+            Long directorId = userService.getUserIdByUsername(authentication.getName());
+            directorService.addProgram(programDto, directorService.getDirector(directorId).getSchool().getId());
+        }
+        catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+            return "add-program";
+        }
+        return "redirect:/programs";
+    }
+
+    @isDirector
+    @PutMapping("/program/update/semester={semester}&grade={gradeId}&start={start}&end={end}")
+    public String updateProgram(Authentication authentication,
+            @PathVariable(value = "semester", required = false) Semester semester,
+            @PathVariable(value = "gradeId", required = false) String gradeId,
+            @PathVariable(value = "start", required = false) LocalDate start,
+            @PathVariable(value = "end", required = false) LocalDate end,
+            @ModelAttribute("subjectsTeached") SubjectsTeachedDtoList subjectsTeached, Model model,
+            HttpServletRequest request) {
+        if (authentication == null) {
+            throw new RuntimeException();
+        }
+        try {
+            Long directorId = userService.getUserIdByUsername(authentication.getName());
+            Director director = directorService.getDirector(directorId);
+            directorService.updateProgram(
+                    new ProgramDto(semester, Long.valueOf(gradeId), start, end, subjectsTeached.getSubjectsTeached()),
+                    director.getSchool().getId());
+        }
+        catch (Exception ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+            return "update-program";
+        }
+        return "redirect:/programs";
+    }
+
+    @DeleteMapping("/program/delete/semester={semester}&grade={gradeId}&start={start}&end={end}")
+    public String deleteProgram(@PathVariable(value = "semester", required = false) Semester semester,
+            @PathVariable(value = "gradeId", required = false) String gradeId,
+            @PathVariable(value = "start", required = false) LocalDate start,
+            @PathVariable(value = "end", required = false) LocalDate end) {
+        try {
+            directorService.removeProgram(semester, Long.valueOf(gradeId), start.atStartOfDay().toLocalDate(),
+                    end.atStartOfDay().toLocalDate());
+        }
+        catch (Exception ex) {
+            return "redirect:/404";
+        }
+        return "redirect:/programs";
     }
 
     private Comparator<Teacher> getTeacherComparator(Director director) {

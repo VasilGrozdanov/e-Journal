@@ -8,8 +8,6 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.FutureOrPresent;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,11 +29,11 @@ public class Program {
     private Grade grade;
 
     @Id
-    @FutureOrPresent
+    @Column(name = "start", columnDefinition = "DATE")
     private LocalDate start;
 
     @Id
-    @Future
+    @Column(name = "end", columnDefinition = "DATE")
     private LocalDate end;
 
     @ManyToMany

@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html lang="en" layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div class="container" layout:fragment="content">
+    <div class="py-5 text-center">
+        <h2>Update program</h2>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12 order-md-1">
+
+            <h4 class="mb-3">Program details</h4>
+
+            <form th:action="@{'/program/update/semester='+${program.semester}+'&grade='+${program.grade.id}+'&start='+${program.start}+'&end='+${program.end}}"
+                  th:method="PUT" th:object="${subjectsTeached}">
+
+                <hr class="mb-4">
+
+                <div class="mb-3">
+                    <h5 class="d-flex mb-3">
+                        <span class="text-muted">Old Program is:&nbsp;&nbsp;&nbsp;</span>
+                    </h5>
+                    <h6>
+                        <span class="text-muted">Semester: </span>
+                        <span th:text="${program.semester}"></span>
+                    </h6>
+                    <h6>
+                        <span class="text-muted">Grade: </span>
+                        <span th:text="${program.grade}"></span>
+                    </h6>
+                    <h6>
+                        <span class="text-muted">Start: </span>
+                        <span th:text="${program.start}"></span>
+                    </h6>
+                    <h6>
+                        <span class="text-muted">End: </span>
+                        <span th:text="${program.end}"></span>
+                    </h6>
+                </div>
+
+                <hr class="mb-4">
+
+                <div th:each="subjectTeached, iterStat : ${program.subjectsTeached}"
+                     class="form-row align-items-center mb-3">
+                    <div class="col-md-6">
+                        <label>Subject</label>
+                        <select th:id="'subject-' + ${iterStat.index}"
+                                th:field="*{subjectsTeached[__${iterStat.index}__].subjectSignature}"
+                                class="form-control">
+                            <option th:each="subject : ${subjects}" th:value="${subject.signature}"
+                                    th:text="${subject.name}"
+                                    th:selected="${subjectTeached.subject.signature == subject.signature}"></option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Teacher</label>
+                        <select th:id="'teacher-' + ${iterStat.index}"
+                                th:field="*{subjectsTeached[__${iterStat.index}__].teacherId}" class="form-control">
+                            <option th:each="teacher : ${teachers}" th:value="${teacher.id}"
+                                    th:text="${teacher.name + ' ' + teacher.lastName}"
+                                    th:selected="${subjectTeached.teacher.id == teacher.id}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Update Subject</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

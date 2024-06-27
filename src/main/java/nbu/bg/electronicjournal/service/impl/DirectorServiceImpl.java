@@ -10,15 +10,19 @@ import nbu.bg.electronicjournal.model.dto.SubjectDto;
 import nbu.bg.electronicjournal.model.entity.*;
 import nbu.bg.electronicjournal.repository.*;
 import nbu.bg.electronicjournal.service.DirectorService;
+import nbu.bg.electronicjournal.service.ProgramService;
 import nbu.bg.electronicjournal.service.SubjectService;
 import nbu.bg.electronicjournal.service.TeacherService;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -34,6 +38,9 @@ public class DirectorServiceImpl implements DirectorService {
     private SchoolRepository schoolRepository;
     private QualificationRepository qualificationRepository;
     private DirectorRepository directorRepository;
+    private ProgramRepository programRepository;
+    private ProgramService programService;
+    private SubjectTeachedByRepository subjectTeachedByRepository;
 
     @Override
     public boolean enrollStudent(StudentEnrollDto studentEnrollDto) {
@@ -133,19 +140,32 @@ public class DirectorServiceImpl implements DirectorService {
 
     @Override
     public boolean addProgram(ProgramDto newProgram, Long schoolId) {
-        newProgram.getSubjectsTeached().forEach(subjectTeached -> {
-            Subject subject = subjectService.getSubject(subjectTeached.getSubjectSignature());
-            Teacher teacher = teacherService.getTeacherWithQualifications(subjectTeached.getTeacherId());
-            Set<Subject> qualifiedSubjects = teacher.getQualifications().stream()
-                                                    .filter(qualification -> qualification.getSchool().getId()
-                                                                                          .equals(schoolId)).findFirst()
-                                                    .orElseThrow().getSubjects();
-            if (!qualifiedSubjects.contains(subject)) {
-                throw new TeacherNotQualifiedException(teacher.getFullName(), subject.toString());
-            }
-        });
-
+        List<SubjectTeachedBy> subjectsTeached = checkTeachersAreQualifiedForSubjects(newProgram, schoolId);
+        Grade grade = gradeRepository.findById(newProgram.getGradeId()).orElseThrow();
+        programRepository.save(
+                new Program(newProgram.getSemester(), grade, newProgram.getStart().atStartOfDay().toLocalDate(),
+                        newProgram.getEnd().atStartOfDay().toLocalDate(), subjectsTeached));
         return true;
+    }
+
+    @Override
+    public boolean updateProgram(ProgramDto updatedProgram, Long schoolId) {
+        checkTeachersAreQualifiedForSubjects(updatedProgram, schoolId);
+        Program program = programService.getProgram(updatedProgram.getSemester(), updatedProgram.getGradeId(),
+                updatedProgram.getStart(), updatedProgram.getEnd());
+        program.setSubjectsTeached(updatedProgram.getSubjectsTeached().stream()
+                                                 .map(subjectsTeached -> subjectTeachedByRepository
+                                                         .findByTeacherIdAndSubjectSignature(
+                                                                 subjectsTeached.getTeacherId(),
+                                                                 subjectsTeached.getSubjectSignature()).orElseThrow())
+                                                 .collect(Collectors.toList()));
+        programRepository.save(program);
+        return true;
+    }
+
+    @Override
+    public void removeProgram(Semester semester, Long gradeId, LocalDate start, LocalDate end) {
+        programRepository.delete(programService.getProgram(semester, gradeId, start, end));
     }
 
     @Override
@@ -162,6 +182,32 @@ public class DirectorServiceImpl implements DirectorService {
     @Override
     public List<Student> getStudents() {
         return studentRepository.findAll();
+    }
+
+    @Override
+    public List<Program> getPrograms(School school) {
+        return programRepository.findAllByGradeSchoolOrderByGrade(school);
+    }
+
+    @Transactional
+    protected List<SubjectTeachedBy> checkTeachersAreQualifiedForSubjects(ProgramDto newProgram, Long schoolId) {
+        return newProgram.getSubjectsTeached().stream().map(subjectTeached -> {
+            Subject subject = subjectService.getSubject(subjectTeached.getSubjectSignature());
+            Teacher teacher = teacherService.getTeacherWithQualifications(subjectTeached.getTeacherId());
+            Set<Subject> qualifiedSubjects = teacher.getQualifications().stream()
+                                                    .filter(qualification -> qualification.getSchool().getId()
+                                                                                          .equals(schoolId)).findFirst()
+                                                    .orElseThrow().getSubjects();
+            if (!qualifiedSubjects.contains(subject)) {
+                throw new TeacherNotQualifiedException(teacher.getFullName(), subject.toString());
+            }
+            return subjectTeachedByRepository.findByTeacherAndSubject(teacher, subject).orElseGet(() -> {
+                SubjectTeachedBy subjectTeachedBy = SubjectTeachedBy.builder().subject(subject).teacher(teacher)
+                                                                    .build();
+                subjectTeachedByRepository.save(subjectTeachedBy);
+                return subjectTeachedBy;
+            });
+        }).collect(Collectors.toList());
     }
 
 }

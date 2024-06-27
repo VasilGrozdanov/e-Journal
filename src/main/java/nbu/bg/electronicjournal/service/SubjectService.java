@@ -13,6 +13,6 @@ public interface SubjectService {
 
     boolean deleteSubject(String signature);
 
-    List<Subject> getSubjects();
+    List<Subject> getAll();
 
 }

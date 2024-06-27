@@ -1,5 +1,6 @@
 package nbu.bg.electronicjournal.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
 @SuperBuilder
 public class Teacher extends User {
 
+    @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "teacher")
     private List<Qualification> qualifications = new ArrayList<>();
 

@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html lang="en" layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const subjects = [[${subjects}]];
+        const teachers = [[${teachers}]];
+        /*]]>*/
+    </script>
+</head>
+<body>
+<div class="container" layout:fragment="content">
+    <div class="" style="margin-top:200px">
+        <div class="rounded d-flex justify-content-center">
+            <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
+                <div class="text-center">
+                    <h3 class="text-primary">Create a new program</h3>
+                </div>
+                <div class="p-4">
+                    <p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+                    <form method="post" th:action="@{/program/add}">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-lock text-white"></i></span>
+                            <select class="form-control" id="semester" name="semester" required>
+                                <option th:each="semester : ${semesters}" th:value="${semester}"
+                                        th:text="${semester}"></option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-lock text-white"></i></span>
+                            <select class="form-control" id="gradeId" name="gradeId" required>
+                                <option th:each="grade : ${grades}" th:value="${grade.id}"
+                                        th:text="${grade}"></option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-calendar text-white"></i></span>
+                            <input type="date" class="form-control" id="start" name="start" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-calendar text-white"></i></span>
+                            <input type="date" class="form-control" id="end" name="end" required>
+                        </div>
+                        <div id="dynamic-fields-container"></div>
+                        <div class="d-grid col-12 mx-auto">
+                            <button type="button" class="btn btn-secondary mb-3" onclick="addField()">Add Subject
+                            </button>
+                        </div>
+                        <div class="d-grid col-12 mx-auto">
+                            <button class="btn btn-primary" type="submit"><span></span>Create</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addField() {
+            const container = document.getElementById("dynamic-fields-container");
+            const fieldIndex = container.children.length;
+
+            const fieldSet = document.createElement("div");
+            fieldSet.className = "input-group mb-3";
+
+            const subjectSelect = document.createElement("select");
+            subjectSelect.className = "form-control";
+            subjectSelect.name = `subjectsTeached[${fieldIndex}].subjectSignature`;
+            subjectSelect.required = true;
+
+            subjects.forEach(subject => {
+                const option = document.createElement("option");
+                option.value = subject.signature;
+                option.text = subject.signature + ' ' + subject.name;
+                subjectSelect.appendChild(option);
+            });
+
+            const teacherSelect = document.createElement("select");
+            teacherSelect.className = "form-control";
+            teacherSelect.name = `subjectsTeached[${fieldIndex}].teacherId`;
+            teacherSelect.required = true;
+
+            teachers.forEach(teacher => {
+                const option = document.createElement("option");
+                option.value = teacher.id;
+                option.text = teacher.username + ': ' + teacher.name + ' ' + teacher.lastName;
+                teacherSelect.appendChild(option);
+            });
+
+            const span1 = document.createElement("span");
+            span1.className = "input-group-text bg-primary";
+            span1.innerHTML = '<i class="fa fa-book text-white"></i>';
+
+            const span2 = document.createElement("span");
+            span2.className = "input-group-text bg-primary";
+            span2.innerHTML = '<i class="fa fa-user text-white"></i>';
+
+            fieldSet.appendChild(span1);
+            fieldSet.appendChild(subjectSelect);
+            fieldSet.appendChild(span2);
+            fieldSet.appendChild(teacherSelect);
+
+            container.appendChild(fieldSet);
+        }
+    </script>
+</div>
+</body>
+</html>

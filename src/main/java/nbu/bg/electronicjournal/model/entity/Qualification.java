@@ -1,5 +1,6 @@
 package nbu.bg.electronicjournal.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.Set;
 @SuperBuilder
 public class Qualification extends BaseEntity {
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;

@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html lang="en" layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div class="container" layout:fragment="content">
+    <div class="py-5 text-center">
+        <h2>Manage Programs</h2>
+        <p class="lead">Explore and manage all programs</p>
+    </div>
+
+    <div class="table-responsive-lg">
+
+        <div class="row">
+
+            <div class="col-lg-12 order-lg-1">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col">Grade</th>
+                        <th scope="col">Semester</th>
+                        <th scope="col">Start</th>
+                        <th scope="col">End</th>
+                        <th scope="col">Subjects</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="program: ${programs}">
+                        <th th:text="${program.grade}">Grade</th>
+                        <th th:text="${program.semester}">Semester</th>
+                        <td th:text="${program.start}">Start</td>
+                        <td th:text="${program.end}">End</td>
+                        <td>
+                            <ol>
+                                <li th:each="subject : ${program.subjectsTeached}"
+                                    th:text="'('+${subject.teacher.username}+') '+${subject.teacher.name}+' '+${subject.teacher.lastName}+' - '+${subject.subject}"></li>
+                            </ol>
+                        </td>
+                        <td>
+                            <form th:action="@{'/program/update/semester='+${program.semester}+'&grade='+${program.grade.id}+'&start='+${program.start}+'&end='+${program.end}}"
+                                  th:method="get">
+                                <button class="btn btn-success" type="submit"><i class="fa fa-edit"></i></button>
+                            </form>
+                            <form th:action="@{'/program/delete/semester='+${program.semester}+'&grade='+${program.grade.id}+'&start='+${program.start}+'&end='+${program.end}}"
+                                  th:method="DELETE">
+                                <button class="btn btn-danger" onclick="confirm('Are you sure?')" type="submit">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+                <form th:action="@{/program/add}" th:method="get">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

@@ -13,6 +13,8 @@
             <a class="p-2 text-dark" href="/subjects" sec:authorize="hasAuthority('ADMIN') or hasAuthority('DIRECTOR')">Subjects</a>
             <a class="btn btn-outline-info" href="/qualifications"
                sec:authorize="hasAuthority('DIRECTOR')">Manage qualifications</a>
+            <a class="btn btn-outline-info" href="/programs"
+               sec:authorize="hasAuthority('DIRECTOR')">Manage programs</a>
             <a class="p-2 text-dark" href="/absences" sec:authorize="hasAuthority('STUDENT')">My
                 absences</a>
             <a class="p-2 text-dark" href="/grades" sec:authorize="hasAuthority('STUDENT')">My
