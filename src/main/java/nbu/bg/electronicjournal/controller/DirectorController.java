@@ -6,6 +6,8 @@ import nbu.bg.electronicjournal.annotation.security.isDirector;
 import nbu.bg.electronicjournal.model.dto.*;
 import nbu.bg.electronicjournal.model.entity.*;
 import nbu.bg.electronicjournal.service.*;
+import nbu.bg.electronicjournal.utilities.AvgMarkGroupingDirector;
+import nbu.bg.electronicjournal.utilities.DirectorGroupingEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
@@ -309,6 +311,33 @@ public class DirectorController {
             return "redirect:/404";
         }
         return "redirect:/programs";
+    }
+
+
+    @isDirector
+    @GetMapping("/statistics/director")
+    public String statisticsPage(Authentication authentication,
+            @RequestParam(value = "selectedGroup", required = false) AvgMarkGroupingDirector selectedGroup, Model model,
+            HttpServletRequest request) {
+        model.addAttribute("groups", AvgMarkGroupingDirector.values());
+        if (selectedGroup == null) {
+            return "statistics-director";
+        }
+        if (authentication == null) {
+            throw new RuntimeException();
+        }
+        model.addAttribute("selectedGroup", selectedGroup);
+        try {
+            Long directorId = userService.getUserIdByUsername(authentication.getName());
+            Director director = directorService.getDirector(directorId);
+            List<AvgMarkDto<DirectorGroupingEntity>> avgGrades = directorService.getAvgGrade(selectedGroup,
+                    director.getSchool());
+            model.addAttribute("gradesPair", avgGrades);
+        }
+        catch (Exception e) {
+            return "redirect:/404";
+        }
+        return "statistics-director";
     }
 
     private Comparator<Teacher> getTeacherComparator(Director director) {

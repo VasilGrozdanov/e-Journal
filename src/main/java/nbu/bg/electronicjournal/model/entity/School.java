@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import nbu.bg.electronicjournal.utilities.DirectorGroupingEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -17,7 +18,7 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @SuperBuilder
-public class School extends BaseEntity {
+public class School extends BaseEntity implements DirectorGroupingEntity {
 
     @NotBlank
     private String name;

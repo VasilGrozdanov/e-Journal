@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import nbu.bg.electronicjournal.utilities.DirectorGroupingEntity;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ import javax.validation.constraints.Positive;
 @Entity
 @DiscriminatorValue("STUDENT")
 @SuperBuilder
-public class Student extends User {
+public class Student extends User implements DirectorGroupingEntity {
 
     @Positive
     private int number;

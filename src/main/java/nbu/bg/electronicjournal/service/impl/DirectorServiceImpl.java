@@ -3,16 +3,12 @@ package nbu.bg.electronicjournal.service.impl;
 import groovy.util.logging.Slf4j;
 import lombok.AllArgsConstructor;
 import nbu.bg.electronicjournal.exceptions.TeacherNotQualifiedException;
-import nbu.bg.electronicjournal.model.dto.ProgramDto;
-import nbu.bg.electronicjournal.model.dto.QualificationDto;
-import nbu.bg.electronicjournal.model.dto.StudentEnrollDto;
-import nbu.bg.electronicjournal.model.dto.SubjectDto;
+import nbu.bg.electronicjournal.model.dto.*;
 import nbu.bg.electronicjournal.model.entity.*;
 import nbu.bg.electronicjournal.repository.*;
-import nbu.bg.electronicjournal.service.DirectorService;
-import nbu.bg.electronicjournal.service.ProgramService;
-import nbu.bg.electronicjournal.service.SubjectService;
-import nbu.bg.electronicjournal.service.TeacherService;
+import nbu.bg.electronicjournal.service.*;
+import nbu.bg.electronicjournal.utilities.AvgMarkGroupingDirector;
+import nbu.bg.electronicjournal.utilities.DirectorGroupingEntity;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
@@ -35,12 +31,13 @@ public class DirectorServiceImpl implements DirectorService {
     private SubjectRepository subjectRepository;
     private SubjectService subjectService;
     private TeacherService teacherService;
-    private SchoolRepository schoolRepository;
+    private SchoolService schoolService;
     private QualificationRepository qualificationRepository;
     private DirectorRepository directorRepository;
     private ProgramRepository programRepository;
     private ProgramService programService;
     private SubjectTeachedByRepository subjectTeachedByRepository;
+    private EvaluatesRepository evaluatesRepository;
 
     @Override
     public boolean enrollStudent(StudentEnrollDto studentEnrollDto) {
@@ -98,8 +95,7 @@ public class DirectorServiceImpl implements DirectorService {
                                                                                                    .equals(schoolId))
                                                              .findFirst()
                                                              .orElse(new Qualification(existingTeacher, new HashSet<>(),
-                                                                     schoolRepository.findById(schoolId)
-                                                                                     .orElseThrow()));
+                                                                     schoolService.getSchool(schoolId)));
         existingQualification.getSubjects().add(existingSubject);
         qualificationRepository.save(existingQualification);
         return true;
@@ -161,6 +157,38 @@ public class DirectorServiceImpl implements DirectorService {
     @Override
     public void removeProgram(Semester semester, Long gradeId, LocalDate start, LocalDate end) {
         programRepository.delete(programService.getProgram(semester, gradeId, start, end));
+    }
+
+    @Override
+    public List<AvgMarkDto<DirectorGroupingEntity>> getAvgGrade(AvgMarkGroupingDirector avgMarkGroupingDirector,
+            School school) {
+        List<Object[]> data;
+        Class<? extends DirectorGroupingEntity> directorGroupingEntityClass;
+        switch (avgMarkGroupingDirector) {
+            case TEACHER:
+                data = evaluatesRepository.findAverageMarkForEachTeacherInSchool(school);
+                directorGroupingEntityClass = Teacher.class;
+                break;
+            case SUBJECT:
+                data = evaluatesRepository.findAverageMarkForEachSubjectInSchool(school);
+                directorGroupingEntityClass = Subject.class;
+                break;
+            case STUDENT:
+                data = evaluatesRepository.findAverageMarkForEachStudentInSchool(school);
+                directorGroupingEntityClass = Student.class;
+                break;
+            case ALL:
+
+                data = evaluatesRepository.findAverageMarkForSchool(school);
+                directorGroupingEntityClass = School.class;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid grouping entity type");
+        }
+
+        return data.stream()
+                   .map(pair -> new AvgMarkDto<DirectorGroupingEntity>(directorGroupingEntityClass.cast(pair[0]),
+                           ((double) pair[1]))).collect(Collectors.toList());
     }
 
     @Override
