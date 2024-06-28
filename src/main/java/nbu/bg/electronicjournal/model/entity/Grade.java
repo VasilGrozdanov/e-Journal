@@ -28,7 +28,7 @@ public class Grade extends BaseEntity {
     @Length(min = 1, max = 1)
     private String letter;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "grade")
     private Set<Student> students;
 
     @OneToOne
