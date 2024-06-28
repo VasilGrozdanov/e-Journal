@@ -9,8 +9,8 @@ import lombok.experimental.SuperBuilder;
 import nbu.bg.electronicjournal.utilities.DirectorGroupingEntity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,7 +23,7 @@ public class Teacher extends User implements DirectorGroupingEntity {
 
     @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "teacher")
-    private List<Qualification> qualifications = new ArrayList<>();
+    private Set<Qualification> qualifications = new HashSet<>();
 
     @Override
     public String toString() {
