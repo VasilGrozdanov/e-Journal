@@ -9,7 +9,7 @@ import nbu.bg.electronicjournal.utilities.DirectorGroupingEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,10 +27,10 @@ public class School extends BaseEntity implements DirectorGroupingEntity {
     private String address;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Teacher> teachers;
+    private List<Teacher> teachers;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Subject> subjects;
+    private List<Subject> subjects;
 
     @Override
     public String toString() {

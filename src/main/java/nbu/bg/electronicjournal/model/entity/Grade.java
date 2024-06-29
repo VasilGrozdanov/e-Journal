@@ -35,7 +35,7 @@ public class Grade extends BaseEntity {
     private School school;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Teacher headTeacher;
+    private School headTeacher;
 
     @OneToOne
     private Program program;

@@ -357,8 +357,9 @@ public class DirectorController {
         };
     }
 
-    private boolean teacherTeachesInSchool(School school, Teacher teacher) {
-        return teacher.getQualifications().stream().anyMatch(qualification -> qualification.getSchool().equals(school));
+    private boolean teacherTeachesInSchool(School school, Teacher teacher1) {
+        return teacher1.getQualifications().stream()
+                       .anyMatch(qualification -> qualification.getSchool().equals(school));
     }
 
     private Long getDirectorId(Authentication authentication) {
