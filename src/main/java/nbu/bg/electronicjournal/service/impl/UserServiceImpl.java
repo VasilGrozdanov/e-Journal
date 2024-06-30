@@ -50,4 +50,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id);
     }
 
+    public boolean usernameExists(String username) {
+        return userRepository.findByUsername(username).isPresent();
+    }
+
 }

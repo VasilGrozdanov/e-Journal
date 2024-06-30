@@ -13,4 +13,5 @@ public interface UserService {
 
     Optional<User> getUserById(Long id); // Add this method
 
+    boolean usernameExists(String username);
 }
