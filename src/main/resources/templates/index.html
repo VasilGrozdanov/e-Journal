@@ -17,7 +17,7 @@
         }
 
         .text-box {
-            background-color: rgba(255, 255, 255, 0.7);
+            background-color: rgba(255, 255, 255, 0.5);
             /* Semi-transparent white background */
             padding: 15px;
             border-radius: 10px;
@@ -31,7 +31,7 @@
             padding: 0;
             position: absolute;
         }
-        .text-box h1 {
+        .text-box h2 {
             font-size: 2.5rem; /* Adjust the font size as needed */
         }
     </style>
@@ -55,7 +55,7 @@
             <div class="col-8 offset-2 text-center text-box">
                 <h2 class="display-3">
                         <span th:if="${#authorization.expression('isAuthenticated()')}">
-                            <span th:text="'Welcome, ' + ${#authentication.principal.username}"></span>
+                            <span th:text="'Welcome ' + ${#authentication.principal.username}"></span>
                         </span>
                     <span th:unless="${#authorization.expression('isAuthenticated()')}">
                             Welcome
