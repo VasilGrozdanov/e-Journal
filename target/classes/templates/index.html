@@ -1,27 +1,75 @@
-<!DOCTYPE HTML>
-<html layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
-<body>
-<div class="container" layout:fragment="content">
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/main_layout}"
+>
 
-    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-        <h1 class="display-3">
-            <span th:if="${#authorization.expression('isAuthenticated()')}">
-                <span th:text="'Welcome, ' + ${#authentication.principal.username}"></span>
-            </span>
-            <span th:unless="${#authorization.expression('isAuthenticated()')}">
-                Welcome
-            </span>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Layout</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS for the page */
+        .cover-image {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
 
-        </h1>
+        .text-box {
+            background-color: rgba(255, 255, 255, 0.7);
+            /* Semi-transparent white background */
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 100px; /* Adjust this negative margin to move the text box lower */
+            position: relative;
+            z-index: 1; /* Ensure text box is above the image */
+        }
 
-        <h3 class="display-4"> To E-Journal </h3>
-        <p class="lead" th:text="'At ' + ${companyName} + ', we redefine logistics by seamlessly connecting supply chains and delivering unparalleled solutions' +
-            'to meet your unique transportation and distribution needs. With a relentless commitment to excellence, we' +
-            'take pride in optimizing your business operations and ensuring the efficient movement of goods across the globe.'">
+        .col-12{
+            height: 100%;
+            padding: 0;
+            position: absolute;
+        }
+        .text-box h1 {
+            font-size: 2.5rem; /* Adjust the font size as needed */
+        }
+    </style>
+    <!-- Additional meta tags, stylesheets, or scripts -->
+</head>
 
-        </p>
-        <br>
+<<body>
+<!-- Content -->
+<div layout:fragment="content">
+    <!-- Bootstrap Container -->
+    <div class="container-fluid">
+        <!-- Row for full-page cover image -->
+        <div class="row">
+            <div class="col-12">
+                <!-- Image loaded from the provided URL -->
+                <img src="https://www.ctvnews.ca/polopoly_fs/1.4270510.1570292473!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg" class="cover-image" alt="Cover Image">
+            </div>
+        </div>
+        <!-- Row for text box -->
+        <div class="row">
+            <div class="col-8 offset-2 text-center text-box">
+                <h2 class="display-3">
+                        <span th:if="${#authorization.expression('isAuthenticated()')}">
+                            <span th:text="'Welcome, ' + ${#authentication.principal.username}"></span>
+                        </span>
+                    <span th:unless="${#authorization.expression('isAuthenticated()')}">
+                            Welcome
+                        </span>
+                </h2>
+                <p>Our e-journal provides a comprehensive view of academic progress for students, absences, and grades, allowing parents to monitor their children\'s attendance and performance. Teachers and headmasters utilize the journal for efficient management of educational records and communication with students and parents. With a focus on enhancing educational transparency and collaboration, we strive to optimize the learning experience for all stakeholders.</p>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-37wTrR/GC0TjrTbd1myYTQi/5zkJxbxAbLeUi89erNE6gKBz1CpUQgeGwGz3z9f/" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0GNA4HDNZBqVhJoKO2oqEzAzSx65IheJepmRWPMf/" crossorigin="anonymous"></script>
 </body>
+
 </html>
