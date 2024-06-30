@@ -1,13 +1,13 @@
-package nbu.bg.electronicjournal.model.dto;
+    package nbu.bg.electronicjournal.model.dto;
 
-import lombok.*;
+    import lombok.*;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class UserUpdateDto {
-    private String username;
-    private String newPassword;
-}
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public class UserUpdateDto {
+        private String username;
+        private String newPassword;
+    }
