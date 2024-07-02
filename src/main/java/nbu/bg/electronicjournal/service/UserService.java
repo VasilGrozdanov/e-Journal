@@ -1,6 +1,9 @@
 package nbu.bg.electronicjournal.service;
 
 import nbu.bg.electronicjournal.model.dto.UserUpdateDto;
+import nbu.bg.electronicjournal.model.entity.User;
+
+import java.util.Optional;
 
 public interface UserService {
 
@@ -8,4 +11,7 @@ public interface UserService {
 
     Long getUserIdByUsername(String username);
 
+    Optional<User> getUserById(Long id); // Add this method
+
+    boolean usernameExists(String username);
 }

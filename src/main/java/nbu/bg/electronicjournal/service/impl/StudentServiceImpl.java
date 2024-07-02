@@ -45,6 +45,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public List<Student> getStudents() {
+        return studentRepository.findAll();
+    }
+
+    @Override
     public double calculateGPA(List<Evaluates> grades) {
         if (grades.isEmpty()) {
             return 0.0;

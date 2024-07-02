@@ -42,5 +42,12 @@ public class Evaluates {
 
     @Min(2)
     @Max(6)
-    private double mark;
+    private int mark;
+
+    public Evaluates(Teacher teacher, Subject subject, Student student, LocalDateTime systemDate) {
+        this.teacher = teacher;
+        this.subject = subject;
+        this.student = student;
+        this.systemDate = systemDate;
+    }
 }

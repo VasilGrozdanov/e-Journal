@@ -2,6 +2,7 @@ package nbu.bg.electronicjournal.service.impl;
 
 import groovy.util.logging.Slf4j;
 import lombok.AllArgsConstructor;
+import nbu.bg.electronicjournal.model.dto.StudentDto;
 import nbu.bg.electronicjournal.model.entity.*;
 import nbu.bg.electronicjournal.repository.*;
 import nbu.bg.electronicjournal.service.TeacherService;
@@ -9,7 +10,10 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -22,17 +26,19 @@ public class TeacherServiceImpl implements TeacherService {
     private SubjectRepository subjectRepository;
     private AbsenceRepository absenceRepository;
     private ParentRepository parentRepository;
+    private ProgramRepository programRepository;
+
 
     @Override
     public Teacher getTeacher(Long id) {
         return teacherRepository.findById(id)
-                                .orElseThrow(() -> new EntityNotFoundException("Teacher with this id doesn't exist"));
+                .orElseThrow(() -> new EntityNotFoundException("Teacher with this id doesn't exist"));
     }
 
     @Override
     public Teacher getTeacherWithQualifications(Long id) {
         return teacherRepository.findByIdWithQualifications(id)
-                                .orElseThrow(() -> new EntityNotFoundException("Teacher with this id doesn't exist"));
+                .orElseThrow(() -> new EntityNotFoundException("Teacher with this id doesn't exist"));
     }
 
     @Override
@@ -59,15 +65,15 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     public boolean deleteMark(Long evaluationId) {
-            Evaluates evaluation = evaluatesRepository.findById(evaluationId)
-                    .orElseThrow(() -> new EntityNotFoundException("Evaluation with this id doesn't exist"));
-            evaluatesRepository.delete(evaluation);
-            return true;
-        }
+        Evaluates evaluation = evaluatesRepository.findById(evaluationId)
+                .orElseThrow(() -> new EntityNotFoundException("Evaluation with this id doesn't exist"));
+        evaluatesRepository.delete(evaluation);
+        return true;
+    }
 
-        public boolean editMark(Long evaluationId, int newMark) {
-            Evaluates evaluation = evaluatesRepository.findById(evaluationId)
-                    .orElseThrow(() -> new EntityNotFoundException("Evaluation with this id doesn't exist"));
+    public boolean editMark(Long evaluationId, int newMark) {
+        Evaluates evaluation = evaluatesRepository.findById(evaluationId)
+                .orElseThrow(() -> new EntityNotFoundException("Evaluation with this id doesn't exist"));
         evaluation.setMark(newMark);
         evaluatesRepository.save(evaluation);
         return true;
@@ -148,5 +154,38 @@ public class TeacherServiceImpl implements TeacherService {
 
         return true;
     }
+
+    public List<StudentDto> getMyStudents(Long teacherId){
+        List<Student> studentList = new ArrayList<>();
+        List<Program> programs = programRepository.findAll();
+
+        programs = programs.stream()
+                .filter(parent -> parent.getSubjectsTeached().stream()
+                        .anyMatch(child -> teacherId.equals(child.getTeacher().getId())))
+                .collect(Collectors.toList());
+        if(programs !=null && !programs.isEmpty()){
+            programs.stream().forEach(program -> {
+                studentList.addAll(program.getGrade().getStudents());
+            });
+        }
+
+        List<StudentDto> studentListDto = new ArrayList<>();
+
+        if(studentList !=null && !studentList.isEmpty()){
+            studentListDto = studentList.stream()
+                    .map(student -> {
+                                List<Parent> parents =  parentRepository.findAll().stream().filter(parent ->
+                                        parent.getKids().contains(student)).collect(Collectors.toList());
+
+                                return new StudentDto(student.getGrade().getLetter(),student.getId(), student.getNumber(), student.getFullName(),
+                                        parents !=null && !parents.isEmpty() ?parents.get(0).getFullName():null);
+                            }
+                    )
+                    .collect(Collectors.toList());
+        }
+
+        return studentListDto;
+    }
+
 
 }

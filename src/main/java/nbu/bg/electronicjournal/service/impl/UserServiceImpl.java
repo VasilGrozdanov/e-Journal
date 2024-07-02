@@ -45,4 +45,13 @@ public class UserServiceImpl implements UserService {
                              .getId();
     }
 
+    @Override
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    public boolean usernameExists(String username) {
+        return userRepository.findByUsername(username).isPresent();
+    }
+
 }

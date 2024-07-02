@@ -18,6 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@DiscriminatorValue("GRADE")
 @SuperBuilder
 public class Grade extends BaseEntity {
 
