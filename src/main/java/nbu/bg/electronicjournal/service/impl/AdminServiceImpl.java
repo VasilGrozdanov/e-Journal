@@ -93,6 +93,7 @@ public class AdminServiceImpl implements AdminService {
                 throw new IllegalArgumentException("Invalid grouping entity type");
         }
         List<Object[]> dataAsList = ((List<Object[]>) data[0]);
+        dataAsList.removeIf(element -> Arrays.stream(element).anyMatch(Objects::isNull));
         return dataAsList.stream()
                          .map(pair -> new AvgMarkDto<AdminGroupingEntity>(adminGroupingEntityClass.cast(pair[0]),
                                  ((double) pair[1]))).collect(Collectors.toList());
