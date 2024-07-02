@@ -48,12 +48,6 @@ public class GlobalExceptionHandler {
         return "redirect:/company";
     }
 
-    @ExceptionHandler(CompanyAlreadyExistsException.class)
-    public String handleCompanyAlreadyExists(final CompanyAlreadyExistsException exception) {
-        log.error(exception.getMessage());
-        return "redirect:/company/create";
-    }
-
     @ExceptionHandler(Exception.class)
     public String genericExceptionHandler(Exception exception, Model model) {
         log.error(exception.getMessage());
