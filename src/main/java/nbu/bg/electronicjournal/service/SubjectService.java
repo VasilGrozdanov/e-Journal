@@ -11,6 +11,8 @@ public interface SubjectService {
 
     Subject getSubject(String signature);
 
+    List<Subject> getSubjects();
+
     boolean deleteSubject(String signature);
 
     List<Subject> getAll();

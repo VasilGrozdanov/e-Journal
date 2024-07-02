@@ -10,6 +10,10 @@
                sec:authorize="hasAuthority('PARENT')">Kids absences</a>
             <a class="p-2 text-dark" href="/enrollStudent"
                sec:authorize="hasAuthority('ADMIN') or hasAuthority('DIRECTOR')">Enroll student</a>
+            <a class="p-2 text-dark" href="/statistics/admin/marks"
+               sec:authorize="hasAuthority('ADMIN')">Statistics marks</a>
+            <a class="p-2 text-dark" href="/statistics/admin/absences"
+               sec:authorize="hasAuthority('ADMIN')">Statistics absences</a>
             <a class="p-2 text-dark" href="/statistics/director"
                sec:authorize="hasAuthority('DIRECTOR')">Statistics</a>
             <a class="p-2 text-dark" href="/subjects" sec:authorize="hasAuthority('ADMIN') or hasAuthority('DIRECTOR')">Subjects</a>

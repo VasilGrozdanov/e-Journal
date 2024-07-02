@@ -42,5 +42,5 @@ public class Evaluates {
 
     @Min(2)
     @Max(6)
-    private int mark;
+    private double mark;
 }

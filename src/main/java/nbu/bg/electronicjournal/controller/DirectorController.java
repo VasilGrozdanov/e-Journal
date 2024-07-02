@@ -6,8 +6,8 @@ import nbu.bg.electronicjournal.annotation.security.isDirector;
 import nbu.bg.electronicjournal.model.dto.*;
 import nbu.bg.electronicjournal.model.entity.*;
 import nbu.bg.electronicjournal.service.*;
-import nbu.bg.electronicjournal.utilities.AvgMarkGroupingDirector;
 import nbu.bg.electronicjournal.utilities.DirectorGroupingEntity;
+import nbu.bg.electronicjournal.utilities.StatisticsGroupingTypeDirector;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
@@ -317,9 +317,9 @@ public class DirectorController {
     @isDirector
     @GetMapping("/statistics/director")
     public String statisticsPage(Authentication authentication,
-            @RequestParam(value = "selectedGroup", required = false) AvgMarkGroupingDirector selectedGroup, Model model,
-            HttpServletRequest request) {
-        model.addAttribute("groups", AvgMarkGroupingDirector.values());
+            @RequestParam(value = "selectedGroup", required = false) StatisticsGroupingTypeDirector selectedGroup,
+            Model model, HttpServletRequest request) {
+        model.addAttribute("groups", StatisticsGroupingTypeDirector.values());
         if (selectedGroup == null) {
             return "statistics-director";
         }

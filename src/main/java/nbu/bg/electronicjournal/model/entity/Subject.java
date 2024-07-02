@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import nbu.bg.electronicjournal.utilities.AdminGroupingEntity;
 import nbu.bg.electronicjournal.utilities.DirectorGroupingEntity;
 
 import javax.persistence.Entity;
@@ -20,7 +21,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @SuperBuilder
 @Table(indexes = { @Index(name = "idx_signature", columnList = "signature") })
-public class Subject implements DirectorGroupingEntity {
+public class Subject implements DirectorGroupingEntity, AdminGroupingEntity {
 
     @Id
     @NotBlank

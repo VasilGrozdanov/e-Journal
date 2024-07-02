@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html lang="en" layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <title>See Statistics for marks</title>
+    <!-- Add other head elements here -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var groupLoad = null;
+
+        $(document).ready(function () {
+            $('#group-select').change(function () {
+                groupLoad = $(this).val();
+                $('#specific-entity-container').show();
+                updateSpecificEntityOptions();
+            });
+
+            function updateSpecificEntityOptions() {
+                if (groupLoad === 'SUBJECT') {
+                    $('#subject-select').show();
+                    $('#subject-select-span').show();
+                    $('#school-select-span').hide();
+                    $('#school-select').hide();
+                } else if (groupLoad === 'SCHOOL') {
+                    $('#subject-select').hide();
+                    $('#subject-select-span').hide();
+                    $('#school-select-span').show();
+                    $('#school-select').show();
+                } else {
+                    $('#subject-select-span').hide();
+                    $('#subject-select').hide();
+                    $('#school-select-span').hide();
+                    $('#school-select').hide();
+                }
+            }
+
+            updateSpecificEntityOptions();  // Initial call to set the visibility based on the initial value of groupLoad
+        });
+    </script>
+</head>
+<body>
+<div class="container" layout:fragment="content">
+    <div class="py-5 text-center">
+        <h2>See Statistics</h2>
+        <p class="lead">Explore average marks statistics for schools or subjects</p>
+    </div>
+
+    <div class="table-responsive-lg">
+        <div class="row">
+            <div class="col-lg-12 order-lg-1">
+                <form th:action="@{/statistics/admin/marks}" method="get">
+                    <div>
+                        <span class="input-group-text bg-primary"><i class="fa fa-book text-white"></i></span>
+                        <select class="form-control" id="group-select" name="selectedGroup">
+                            <option value="0" disabled selected>Select a group for statistics</option>
+                            <option th:each="group : ${groups}" th:value="${group}" th:text="${group}"></option>
+                        </select>
+                    </div>
+                    <div id="specific-entity-container" style="display: none;">
+                        <div>
+                            <div>
+                                <span class="input-group-text bg-primary"><i class="fa fa-book text-white"
+                                                                             id="subject-select-span"></i></span>
+                                <select class="form-control" id="subject-select" name="specificSubject"
+                                        style="display: none;">
+                                    <option value="0">Select a specific subject</option>
+                                    <option th:each="subject : ${subjects}" th:value="${subject.signature}"
+                                            th:text="${subject}"></option>
+                                </select>
+                            </div>
+                            <div>
+                                <span class="input-group-text bg-primary"><i class="fa fa-book text-white"
+                                                                             id="school-select-span"></i></span>
+                                <select class="form-control" id="school-select" name="specificSchool"
+                                        style="display: none;">
+                                    <option value="0">Select a specific school</option>
+                                    <option th:each="school : ${schools}" th:value="${school.id}"
+                                            th:text="${school}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <!--                        <button class="btn btn-secondary" id="specify-button">Specify</button>-->
+                        <button class="btn btn-primary" type="submit">Show</button>
+                    </div>
+                </form>
+
+                <div th:if="${selectedGroup != null}" class="mt-3">
+                </div>
+                <table class="table table-hover table-bordered" th:if="${selectedGroup != null}">
+                    <thead>
+                    <tr>
+                        <th scope="col" th:if="${selectedGroup != null && selectedGroup.ordinal() == 0}">Subject</th>
+                        <th scope="col" th:if="${selectedGroup != null && selectedGroup.ordinal() == 1}">School</th>
+                        <th scope="col">Average grade</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="gradePair : ${gradesPair}">
+                        <td th:if="${selectedGroup != null && selectedGroup.ordinal() == 0}"
+                            th:text="${gradePair.entity}">Subject
+                        </td>
+                        <td th:if="${selectedGroup != null && selectedGroup.ordinal() == 1}"
+                            th:text="${gradePair.entity}">School
+                        </td>
+                        <td th:text="${gradePair.mark}">Average grade</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

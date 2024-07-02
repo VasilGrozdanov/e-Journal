@@ -7,14 +7,15 @@ import nbu.bg.electronicjournal.model.dto.*;
 import nbu.bg.electronicjournal.model.entity.*;
 import nbu.bg.electronicjournal.repository.*;
 import nbu.bg.electronicjournal.service.*;
-import nbu.bg.electronicjournal.utilities.AvgMarkGroupingDirector;
 import nbu.bg.electronicjournal.utilities.DirectorGroupingEntity;
+import nbu.bg.electronicjournal.utilities.StatisticsGroupingTypeDirector;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,6 +39,7 @@ public class DirectorServiceImpl implements DirectorService {
     private ProgramService programService;
     private SubjectTeachedByRepository subjectTeachedByRepository;
     private EvaluatesRepository evaluatesRepository;
+    private AbsenceRepository absenceRepository;
 
     @Override
     public boolean enrollStudent(StudentEnrollDto studentEnrollDto) {
@@ -160,11 +162,11 @@ public class DirectorServiceImpl implements DirectorService {
     }
 
     @Override
-    public List<AvgMarkDto<DirectorGroupingEntity>> getAvgGrade(AvgMarkGroupingDirector avgMarkGroupingDirector,
-            School school) {
+    public List<AvgMarkDto<DirectorGroupingEntity>> getAvgGrade(
+            StatisticsGroupingTypeDirector statisticsGroupingTypeDirector, School school) {
         List<Object[]> data;
         Class<? extends DirectorGroupingEntity> directorGroupingEntityClass;
-        switch (avgMarkGroupingDirector) {
+        switch (statisticsGroupingTypeDirector) {
             case TEACHER:
                 data = evaluatesRepository.findAverageMarkForEachTeacherInSchool(school);
                 directorGroupingEntityClass = Teacher.class;
@@ -177,13 +179,15 @@ public class DirectorServiceImpl implements DirectorService {
                 data = evaluatesRepository.findAverageMarkForEachStudentInSchool(school);
                 directorGroupingEntityClass = Student.class;
                 break;
-            case ALL:
-
+            case SCHOOL:
                 data = evaluatesRepository.findAverageMarkForSchool(school);
                 directorGroupingEntityClass = School.class;
                 break;
             default:
                 throw new IllegalArgumentException("Invalid grouping entity type");
+        }
+        if (data.contains(null)) {
+            data = new ArrayList<>();
         }
 
         return data.stream()

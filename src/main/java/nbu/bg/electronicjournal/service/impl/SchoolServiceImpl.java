@@ -8,6 +8,7 @@ import nbu.bg.electronicjournal.service.SchoolService;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -19,5 +20,10 @@ public class SchoolServiceImpl implements SchoolService {
     public School getSchool(Long id) {
         return schoolRepository.findById(id)
                                .orElseThrow(() -> new EntityNotFoundException("School with this id doesn't exist"));
+    }
+
+    @Override
+    public List<School> getSchools() {
+        return schoolRepository.findAll();
     }
 }

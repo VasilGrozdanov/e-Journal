@@ -31,6 +31,11 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    public List<Subject> getSubjects() {
+        return subjectRepository.findAll();
+    }
+
+    @Override
     public boolean deleteSubject(String signature) {
         Subject existingSubject = subjectRepository.findBySignature(signature).orElseThrow(
                 () -> new EntityNotFoundException("Subject with this signature doesn't exist"));

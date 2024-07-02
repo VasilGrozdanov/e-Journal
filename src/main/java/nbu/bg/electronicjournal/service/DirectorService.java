@@ -2,8 +2,8 @@ package nbu.bg.electronicjournal.service;
 
 import nbu.bg.electronicjournal.model.dto.*;
 import nbu.bg.electronicjournal.model.entity.*;
-import nbu.bg.electronicjournal.utilities.AvgMarkGroupingDirector;
 import nbu.bg.electronicjournal.utilities.DirectorGroupingEntity;
+import nbu.bg.electronicjournal.utilities.StatisticsGroupingTypeDirector;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -30,8 +30,8 @@ public interface DirectorService {
 
     void removeProgram(Semester semester, Long gradeId, LocalDate start, LocalDate end);
 
-    List<AvgMarkDto<DirectorGroupingEntity>> getAvgGrade(AvgMarkGroupingDirector avgMarkGroupingDirector,
-            School schoolId);
+    List<AvgMarkDto<DirectorGroupingEntity>> getAvgGrade(StatisticsGroupingTypeDirector statisticsGroupingTypeDirector,
+            School school);
 
     List<Grade> getGrades();
 
