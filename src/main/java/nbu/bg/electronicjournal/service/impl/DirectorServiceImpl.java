@@ -74,7 +74,6 @@ public class DirectorServiceImpl implements DirectorService {
     @Override
     public boolean updateSubject(SubjectDto updatedSubject) {
         Subject existingSubject = subjectService.getSubject(updatedSubject.getSignature());
-        ;
         existingSubject.setName(updatedSubject.getName());
         subjectRepository.save(existingSubject);
         return true;
