@@ -43,4 +43,11 @@ public class Absence {
     @Enumerated(EnumType.STRING)
     private AbsenceType type;
 
+    public Absence(Teacher teacher, Subject subject, Student student, LocalDateTime systemDate) {
+        this.teacher = teacher;
+        this.subject = subject;
+        this.student = student;
+        this.systemDate = systemDate;
+    }
+
 }

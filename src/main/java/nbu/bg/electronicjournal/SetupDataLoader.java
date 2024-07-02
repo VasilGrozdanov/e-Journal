@@ -73,7 +73,6 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
                                     .password(passwordEncoder.encode("director")).name(system).lastName(system).age(55)
                                     .school(school).build();
 
-
         // persist users
         adminRepository.save(admin);
         teacherRepository.save(teacher);

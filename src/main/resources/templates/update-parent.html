@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html lang="en" layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div class="container" layout:fragment="content">
+
+    <div class="" style="margin-top:100px">
+        <div class="rounded d-flex justify-content-center">
+            <div class="col-md-8 col-sm-12 shadow-lg p-5 bg-light">
+                <div class="text-center">
+                    <h3 class="text-primary">Update Student Parent</h3>
+                </div>
+                <h6 class="p-4">Student: <span class="text-primary" th:text="${studentName}"></span></h6>
+                <div class="p-4">
+                    <p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+                    <form method="post" th:action="@{'/students/update-parent?studentId=' + ${studentId}}">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-book text-white">&nbspParent:&nbsp</i></span>
+                            <select class="form-control" id="student-id" name="parentId">
+                                <option value="0" th:text="''"></option>
+                                <option th:each="parent : ${parents}" th:value="${parent.id}"
+                                        th:text="${parent.fullName}"
+                                        th:selected="${parent.id == parentId}"></option>
+                            </select>
+                        </div>
+                        <div class="d-grid">
+                            <button class="btn btn-primary" type="submit"><span></span> Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

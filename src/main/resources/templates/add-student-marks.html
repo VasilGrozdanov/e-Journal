@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html lang="en" layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div class="container" layout:fragment="content">
+
+    <div class="">
+        <div class="rounded d-flex justify-content-center">
+            <div class="col-md-8 col-sm-12 shadow-lg bg-light">
+                <div class="text-center">
+                    <h3 class="text-primary">Add Student Marks</h3>
+                </div>
+                <div class="p-4">
+                    <p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+                    <form method="post" th:action="@{/students/add-student-marks}">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-book text-white">&nbspStudent:&nbsp</i></span>
+                            <select class="form-control" id="student-id" name="studentId">
+                                <option value="0" th:text="''"></option>
+                                <option th:each="student : ${students}" th:value="${student.studentId}"
+                                        th:text="${student.name}"></option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-book text-white">&nbspSubject:&nbsp</i></span>
+                            <select class="form-control" id="subject-id" name="subjectId">
+                                <option value="0" th:text="''"></option>
+                                <option th:each="subject : ${subjects}" th:value="${subject.signature}"
+                                        th:text="${subject.name}"></option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-lock text-white"></i></span>
+                            <input class="form-control" id="mark" name="mark"
+                                   placeholder="Marks" type="number" required>
+                        </div>
+                        <div class="d-grid">
+                            <button class="btn btn-primary" type="submit"><span></span> Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="table-responsive-lg">
+
+        <div class="row">
+
+            <div class="col-lg-12 order-lg-1">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col">Student</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Teacher</th>
+                        <th scope="col">Marks</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="evaluate: ${evaluates}">
+                        <td th:text="${evaluate.student.fullName}">Student</td>
+                        <td th:text="${evaluate.subject.name}">Subject</td>
+                        <td th:text="${evaluate.teacher.fullName}">Teacher</td>
+                        <td th:text="${evaluate.mark}">Marks</td>
+                        <td th:text="${evaluate.systemDate}">Date</td>
+                        <td style="display: flex;">
+                            <form style="margin-right: 4px;" th:action="@{'/students/student-mark/studentId='+${evaluate.student.id}+'&subjectId='+${evaluate.subject.signature}+'&systemDate='+${evaluate.systemDate}}"
+                                  th:method="DELETE">
+                                <button class="btn btn-danger" onclick="confirm('Are you sure?')" type="submit">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </form>
+                            <form th:method="get"
+                                  th:action="@{'/students/edit-students-marks/studentId='+${evaluate.student.id}+'&subjectId='+${evaluate.subject.signature}+'&systemDate='+${evaluate.systemDate}+'&mark='+${evaluate.mark}}">
+                                <button class="btn btn-success" type="submit"><i class="fa fa-edit"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html lang="en" layout:decorate="~{fragments/main_layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<body>
+<div class="container" layout:fragment="content">
+
+    <div class="">
+        <div class="rounded d-flex justify-content-center">
+            <div class="col-md-8 col-sm-12 shadow-lg bg-light">
+                <div class="text-center">
+                    <h3 class="text-primary">Edit Student Marks</h3>
+                </div>
+                <div class="p-4">
+                    <p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+                    <form th:action="@{/students/update-student-marks}" th:method="PUT">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-book text-white">&nbspStudent:&nbsp</i></span>
+                            <select class="form-control" id="student-id" name="studentId" disabled>
+                                <option value="0" th:text="''"></option>
+                                <option th:each="student : ${students}" th:value="${student.studentId}"
+                                        th:text="${student.name}"
+                                        th:selected="${student.studentId == studentId}"></option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-book text-white">&nbspSubject:&nbsp</i></span>
+                            <select class="form-control" id="subject-id" name="subjectId" disabled>
+                                <option value="0" th:text="''"></option>
+                                <option th:each="subject : ${subjects}" th:value="${subject.signature}"
+                                        th:text="${subject.name}"
+                                        th:selected="${subject.signature == subjectId}"></option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary"><i class="fa fa-lock text-white"></i></span>
+                            <input class="form-control" id="mark" name="mark" th:value="*{mark}"
+                                   placeholder="Marks" type="number" required>
+
+                        </div>
+                        <div class="d-grid">
+                            <button class="btn btn-primary" type="submit"><span></span> Save </button>
+                        </div>
+                        <div class="input-group mb-3" style="visibility: hidden">
+                            <input class="form-control" id="systemDate" name="systemDate" th:value="*{systemDate}"
+                                   placeholder="Date" type="datetime-local">
+                            <select class="form-control" id="subject2-id" name="subjectId">
+                                <option value="0" th:text="''"></option>
+                                <option th:each="subject : ${subjects}" th:value="${subject.signature}"
+                                        th:text="${subject.name}"
+                                        th:selected="${subject.signature == subjectId}"></option>
+                            </select>
+                            <select class="form-control" id="student-id" name="studentId">
+                                <option value="0" th:text="''"></option>
+                                <option th:each="student : ${students}" th:value="${student.studentId}"
+                                        th:text="${student.name}"
+                                        th:selected="${student.studentId == studentId}"></option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

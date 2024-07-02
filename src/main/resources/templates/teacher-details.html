@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher Details</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-4">Teacher Details</h1>
+    <div id="teacherDetails" class="mt-4">
+        <h2>Teacher Information</h2>
+        <p><strong>ID:</strong> <span id="teacherId">{{ teacher.id }}</span></p>
+        <p><strong>Name:</strong> <span id="teacherName">{{ teacher.name }}</span></p>
+        <p><strong>Subject:</strong> <span id="teacherLname">{{ teacher.lastname }}</span></p>
+        <p><strong>Email:</strong> <span id="teacherAge">{{ teacher.age }}</span></p>
+    </div>
+    <div class="mt-4">
+        <a href="/teacher/edit/{{ teacher.id }}" class="btn btn-primary">Edit Details</a>
+    </div>
+</div>
+</body>
+</html>
